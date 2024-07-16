@@ -19,7 +19,7 @@ export async function signInS(formdata) {
     //just pass the status of login to client login page. let it handle notice and redirect .as server side is hard to popup notice.
     switch (error.type) {
       case "NEXT_REDIRECT":
-        return "success"; //redirect('/pages/admin');
+        return "success"; //redirect('/admin');
       case "CredentialsSignin":
         return "wrong pwd try again";
       //redirect ('nextauth');

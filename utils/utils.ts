@@ -1,3 +1,4 @@
+/**manage the imgrul string from db  */
 export const parseProducts = (dataArray:[{}] ) => {
    // console.log(dataArray)
     let updateData = [];

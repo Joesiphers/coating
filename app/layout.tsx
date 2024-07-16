@@ -2,7 +2,6 @@
 import "./globals.css";
 import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import { Inter } from "next/font/google";
-import Navbar from "components/navbar/Navbar";
 import Header from "components/layout/header";
 import Footer from "components/layout/footer";
 //import { SessionProvider } from "next-auth/react";

@@ -16,33 +16,33 @@ const menuItems = [
   {
     name: "About - us",
     description: "Along understanding ",
-    href: "/pages/about",
+    href: "/about",
     icon: ChartPieIcon,
   },
   {
     name: "Products and Services",
     description: "",
-    href: "/pages/products",
+    href: "/products",
     icon: CursorArrowRaysIcon,
   },
   {
     name: "Tech behide",
-    href: "/pages/tech",
+    href: "/tech",
     icon: FingerPrintIcon,
   },
   {
     name: "Project Experience",
-    href: "/pages/projects",
+    href: "/projects",
     icon: SquaresPlusIcon,
   },
   {
     name: "Contact",
-    href: "/pages/contact",
+    href: "/contact",
     icon: ArrowPathIcon,
   },
   {
     name: "Admin",
-    href: "/pages/admin",
+    href: "/admin",
     icon: ArrowPathIcon,
   },
 ];

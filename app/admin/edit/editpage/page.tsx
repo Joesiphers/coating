@@ -28,7 +28,7 @@ const EditPage = ({ searchParams }) => {
 
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   const { data, isLoading, error } = useSWR(
-    `/pages/admin/api/products?id=${id}`,
+    `/admin/api/products?id=${id}`,
     fetcher,
   );
   //console.log(data, isLoading, error)
@@ -53,7 +53,7 @@ const EditPage = ({ searchParams }) => {
       formdata.append("files", toAddFiles[i].file);
     }
     console.log("tosave", toSaveData, toAddFiles);
-    const response = await fetch(`/pages/admin/api/products?`, {
+    const response = await fetch(`/admin/api/products?`, {
       method: "POST",
       body: formdata,
     }).then((res) => res.text());

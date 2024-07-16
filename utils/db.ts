@@ -1,5 +1,5 @@
-const DATABASE_URL =
-  "ppostgres://Joesiphers:j7ZgVUoK4tPn@ep-frosty-haze-09169370.ap-southeast-1.aws.neon.tech/neondb?options=endpoint%3Dep-frosty-haze-09169370";
+const DATABASE_URL =process.env.DATABASE_URL
+
 import { Pool } from "pg";
 export async function dbquery(
   query: string,
@@ -11,11 +11,13 @@ export async function dbquery(
   });
   try {
     const client = await pool.connect();
-    const res = await client.query(query, values);
+    const res = await client.query(query, values);     
+    console.log("db access connected")
     client.release();
     //console.log("quering : ", query, values, res.rows);
     return res.rows;
   } catch (error) {
+    console.log("db access error : ", error)
     return error;
   }
 }

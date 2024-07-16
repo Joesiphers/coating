@@ -70,8 +70,8 @@ export default function Page({ searchParams }) {
       setInputState(uData);
     }
   }, [data]);
-  // "api/projects?id=${id}"-->http://localhost:3000/pages/admin/editproject/api/projects?id=2
-  //`../api/projects?id=${id}`--> http://localhost:3000/pages/admin/api/projects?id=2
+  // "api/projects?id=${id}"-->http://localhost:3000/admin/editproject/api/projects?id=2
+  //`../api/projects?id=${id}`--> http://localhost:3000/admin/api/projects?id=2
   //useEffect(()=>{},[])
   if (isLoading) return <div>Loading</div>;
   //console.log(inputState,data.res[0])

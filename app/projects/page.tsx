@@ -31,7 +31,7 @@ export default async function Projects() {
             <div className="m-4" key={index}>
               <Link
                 href={{
-                  pathname: `/pages/projects/projectDetails`,
+                  pathname: `/projects/projectDetails`,
                   query: { id: item.id },
                 }}
               >

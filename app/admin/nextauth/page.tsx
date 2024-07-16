@@ -19,7 +19,7 @@ export default function Component() {
     setIsOpen(true);
     setContent(res);
     if (res == "success") {
-      router.push("/pages/admin");
+      router.push("/admin");
     }
     // alert( res); // res from signIn()
     //return res;

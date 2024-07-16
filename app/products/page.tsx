@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getProduct } from "api/getAPI";
-1;
+
 export default async function Products() {
   let productsArray = await getProduct("all");
   const parseProducts = (productsArray) => {
     let productsDataObj = productsArray;
-    //console.log(productsArray)
+    console.log("productARR",productsArray)
     let updateData = [];
     for (let i of productsDataObj) {
       updateData.push({ ...i, imgurl: JSON.parse(i.imgurl) });
