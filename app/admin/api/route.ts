@@ -1,5 +1,5 @@
-import { updateProduct } from "api/updateAPI";
-import { getProduct } from "api/getAPI";
+import { updateProduct } from "@/api/updates";
+import { getProduct } from "api/gets";
 
 export async function POST(request) {
   const req = await request.json(); //request.body; //request.body

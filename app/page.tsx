@@ -22,13 +22,15 @@ export default function Page() {
         <Image
           className="dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert relative"
           src="/image/offshore-platform.jpg"
-          alt="wwin Logo"
+          alt="Coating reenforced for last"
           fill={true}
           style={{
             objectFit: "contain",
             position: "",
           }}
         />
+        <div className="rounded bg-gradient-to-t from-slate-400 absolute top-[35%] left-[60%]">
+          <p className="text-white text-3xl">Coating enforced to last</p> </div>
       </div>
 
       <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">

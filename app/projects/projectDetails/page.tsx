@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getProject } from "api/getAPI";
+import { getProject } from "api/gets";
 
 export default async function Page({
   searchParams,

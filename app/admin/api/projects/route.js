@@ -1,5 +1,5 @@
-import { updateProject } from "api/updateAPI";
-import { getProject } from "api/getAPI";
+import { updateProject } from "api/updates";
+import { getProject } from "api/gets";
 
 import fs from "fs";
 import path from "node:path";

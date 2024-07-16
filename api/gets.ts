@@ -10,13 +10,7 @@ export async function getProduct(id: number | "all") {
     } catch (err) {
       return err;
     }
-    /* for (let i = 0; i < result.length; i++) {
-      // console.log("dbquery-undefined-result", result[i].imgurl);
 
-      result[i].imgurl = JSON.parse(result[i].imgurl);
-      //  console.log("dbquery-undefined-result", result[i].imgurl);
-      return result;
-    }*/
   } else {
     values = [id];
     // console.log("dbquery", dbquery);

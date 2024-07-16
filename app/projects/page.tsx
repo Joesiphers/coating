@@ -1,20 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import ProjectCard from "./projectCard";
-import { getProject } from "@/api/getAPI";
+import { getProject } from "@/api/gets";
 import { parseProducts } from "@/utils/utils";
 
-/*const projects = [
-  {
-    id: 1,
-    name: "sinopec",
-    title: "sinopec tank coated",
-    imgUrl: "/image/sinopec.png",
-    description:"....."
-  },
 
-];
-*/
 export default async function Projects() {
   let projects = await getProject("all");
   projects = parseProducts(projects);

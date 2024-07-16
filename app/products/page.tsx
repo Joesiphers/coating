@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getProduct } from "api/getAPI";
+import { getProduct } from "api/gets";
 
 export default async function Products() {
   let productsArray = await getProduct("all");

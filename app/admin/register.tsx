@@ -1,4 +1,4 @@
-import { addUser } from "@/api/updateAPI";
+import { addUser } from "@/api/updates";
 import bcrypt from "bcrypt";
 export default async function Register() {
   const register = async (data) => {
