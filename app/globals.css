@@ -16,9 +16,24 @@
   }
 }
 
-body {
-  
+[data-aos^='in'] {
+  opacity: 0;
+  transition-property: opacity, transform;
+
+  &.aos-animate {
+    opacity: 1;
+    transform: none;
+  }
 }
+[data-aos='out'] {
+  opacity: 1;
+  transition-property: opacity;
+  &.aos-animate {
+    opacity: 0.4;
+    transition-duration: 2s;
+  }
+}
+
 
 /* color: transparent;
 color: rgb(var(--foreground-rgb));

@@ -18,7 +18,9 @@ export default function RootLayout({
       <GoogleTagManager gtmId="GTM-M2W2BLCD" />
       <body className={inter.className}>
         <Header />
-        <main className="min-h-[94vh] pt-16 text-center">{children}</main>
+        <main className="min-h-[94vh] pt-16 text-center">
+          {children}
+          </main>
         <Footer />
       </body>
       <GoogleAnalytics gaId="G-2JMP8VV00S" />

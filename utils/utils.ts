@@ -1,10 +1,11 @@
-/**manage the imgrul string from db  */
-export const parseProducts = (dataArray:[{}] ) => {
-   // console.log(dataArray)
-    let updateData = [];
-    for (let i of dataArray) {
-      updateData.push({ ...i, imgurl: JSON.parse(i.imgurl) });
-      }
-      //console.log("PARSE dataArray")
-
-  return updateData}
+/**manage the products array of object from db TO array [] */
+export const parseProducts = (productsArray) => {
+  console.log("productARR",productsArray, typeof(productsArray))
+  // productsArray type of Object
+  let updateData = [];
+  for (let i of productsArray) {
+    //convert imgurl from string to array 
+    updateData.push({ ...i, imgurl: JSON.parse(i.imgurl) });
+  }
+  return updateData;
+};

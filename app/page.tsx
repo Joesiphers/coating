@@ -2,7 +2,9 @@ import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
-
+import Aosinit from "utils/aosinit"
+// ..
+//AOS.init();
 
 export const metadata = {
   title: "Nex coating for last",
@@ -11,15 +13,14 @@ export const metadata = {
 
 
 export default function Page() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
+  return (<>
+    <Aosinit/>
+    <div className="flex min-h-screen flex-col items-center justify-between">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex"></div>
 
-      <div
-        className="relative flex justify-center w-full
-"
+      <div         className="relative flex justify-center w-full"
       >
-        <Image
+        <Image data-aos="out" data-aos-anchor-placement="center-top"
           className="dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert relative"
           src="/image/offshore-platform.jpg"
           alt="Coating reenforced for last"
@@ -29,69 +30,156 @@ export default function Page() {
             position: "",
           }}
         />
-        <div className="rounded bg-gradient-to-t from-slate-400 absolute top-[35%] left-[60%]">
-          <p className="text-white text-3xl">Coating enforced to last</p> </div>
-      </div>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <Link href="/products">
-          <h2 className={`m-3 text-2xl font-semibold`}>
+        <div className="rounded absolute top-[55%] left-[60%]">
+          <p className="text-white text-3xl">Coated to last</p> 
+        </div>
+
+      </div>
+        <div className="m-4 p-4 text-sky-600 h-60 w-10/12" 
+        data-aos-offset="100" data-aos-delay="150" data-aos-duration="700" data-aos="fade-up"
+        
+        >
+          <h1 className="m-4 text-4xl font-mdeium">Company description</h1>
+          <p className="m-4">details details details details details details details details details details details details details details details details details details details details details details details details details details details </p>
+        </div>
+          <hr className="bg-slate-700 w-10/12 my-4" />
+      <section className=" mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left " > 
+        <Link href="/products" data-aos="fade-left" data-aos-duration="800"
+                  className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
+        >
+          <h2 className={`m-12 text-2xl font-semibold`}>
             Internal Coatted Pipes Projects
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
           </h2>
-          <Image
+          <Image className="rounded"
             src="/image/coated-pipe.jpg"
             alt="coated-pipe"
-            width={600}
-            height={401}
+            width={800}
+            height={601}
           />
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+          <p className={`m-4 max-w-[30ch] text-sm opacity-50`}>
             epoxy anti-corrosion coating for extrem condition.
           </p>
         </Link>
-
-        <Link
-          href="/about"
+        <Link data-aos="fade-left" data-aos-duration="2000"
+          href="/joints"
           className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
           rel="noopener noreferrer"
         >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            More about WWin
+          <h2 className={`m-12 text-2xl font-semibold` }>
+            Joints Solution
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               --&gt;
             </span>
           </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+          <p className={`m-4 max-w-[30ch] text-sm opacity-50`}>
             Learn about ePoxy coating and About!
           </p>
         </Link>
-        <Link href="/us">
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Tech Behind - Cemaric Epoxy Coating
+        <Link href="/service"  data-aos="fade-left" data-aos-duration="2500"
+        className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
+        >
+          <h2 className={`m-12 text-2xl font-semibold`}>
+            Service and Machinary
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
           </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Reports and Certificate
+          <p className={`m-4 max-w-[30ch] text-sm opacity-50`}>
+          Cemaric Epoxy Coating
           </p>
         </Link>
 
-        <Link href="pages/projects">
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Successful Projects{" "}
+        <Link href="/projects" data-aos="fade-left" data-aos-duration="3000"
+        className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
+        >
+          <h2 className={`m-12 text-2xl font-semibold`}>
+            Enginerring Team
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
           </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+          <p className={`m-4 max-w-[30ch] text-sm opacity-50`}>
             Sino Off-Shore Petro
           </p>
         </Link>
-      </div>
+      </section>
+      <div className="m-4 p-4 text-green-600 h-60 w-10/12" 
+        data-aos-offset="100" data-aos-delay="200" data-aos-duration="1000" data-aos="fade-up"
+        
+        >
+          <h1 className="m-4 text-4xl font-mdeium">Project the best</h1>
+          <p className="m-4">details details details details details details details details details details details details details details details details details details details details details details details details details details details </p>
+        </div>
+
+      <section className=" mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left " > 
+        <Link href="/products" data-aos="fade-left" data-aos-duration="1000"
+                  className="group lg:shadow-lg rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
+        >
+          <h2 className={`m-12 text-2xl font-semibold`}>
+            Coated ready Pipes
+            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+              -&gt;
+            </span>
+          </h2>
+          <Image className="rounded"
+            src="/image/coated-pipe.jpg"
+            alt="coated-pipe"
+            width={800}
+            height={601}
+          />
+          <p className={`m-4 max-w-[30ch] text-sm opacity-50`}>
+            epoxy anti-corrosion coating for extrem condition.
+          </p>
+        </Link>
+        <Link data-aos="fade-left" data-aos-duration="2000"
+          href="/joints"
+          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
+          rel="noopener noreferrer"
+        >
+          <h2 className={`m-12 text-2xl font-semibold` }>
+            Offshore projects
+            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+              --&gt;
+            </span>
+          </h2>
+          <p className={`m-4 max-w-[30ch] text-sm opacity-50`}>
+            Learn about ePoxy coating and About!
+          </p>
+        </Link>
+        <Link href="/service"  data-aos="fade-left" data-aos-duration="2500"
+        className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
+        >
+          <h2 className={`m-12 text-2xl font-semibold`}>
+            Chemistry Container
+            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+              -&gt;
+            </span>
+          </h2>
+          <p className={`m-4 max-w-[30ch] text-sm opacity-50`}>
+          Cemaric Epoxy Coating
+          </p>
+        </Link>
+
+        <Link href="/projects" data-aos="fade-left" data-aos-duration="3000"
+        className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
+        >
+          <h2 className={`m-12 text-2xl font-semibold`}>
+            Gas 
+            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+              -&gt;
+            </span>
+          </h2>
+          <p className={`m-4 max-w-[30ch] text-sm opacity-50`}>
+            Sino Off-Shore Petro
+          </p>
+        </Link>
+      </section>
       <Link href="./admin/login">login</Link>
-    </main>
-  );
+    </div>
+
+    </>  );
 }

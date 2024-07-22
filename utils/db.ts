@@ -18,7 +18,7 @@ export async function dbquery(
     return res.rows;
   } catch (error) {
     console.log("db access error : ", error)
-    return error;
+    throw new Error( "Data Access error");
   }
 }
 /** const query = `

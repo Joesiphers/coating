@@ -1,25 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getProduct } from "api/gets";
+import {parseProducts} from "utils/utils"
+import Modal from "@/components/layout/Modal";
 
 export default async function Products() {
-  let productsArray = await getProduct("all");
-  const parseProducts = (productsArray) => {
-    let productsDataObj = productsArray;
-    console.log("productARR",productsArray)
-    let updateData = [];
-    for (let i of productsDataObj) {
-      updateData.push({ ...i, imgurl: JSON.parse(i.imgurl) });
-    }
-    return updateData;
-  };
-  const products = parseProducts(productsArray);
-  // products.map((item) => console.log(item));
-  console.log("productsPage", products);
+  let productsArray =null;
+  try { const array = await getProduct("all");
+    console.log("Array", array)
+  }
+  catch(err){
+    console.log("no products Array received" ,err)
+    const message=err instanceof Error ? err.message : "unknown Error";
+    return <Modal info={message} />
+  }
+  let products;
+  if (productsArray) { products = parseProducts(productsArray)} 
   return (
     <div className="w-5/6 m-auto">
       <div className="w-5/6 my-8 mx-auto">
-        <p className="text-4xl m-4">Pre-Coated Pipes</p>
+        <p className="text-4xl m-12">Pre-Coated Pipes</p>
 
         <Image
           src="/image/coatedpipes.jpg"
@@ -29,7 +29,7 @@ export default async function Products() {
             objectFit: "contain",
             position: "",
           }}
-          className=""
+          className="rounded"
         />
       </div>
       <div className="flex justify-between mt-4 grid grid-cols-4 gap-2">
@@ -55,6 +55,11 @@ export default async function Products() {
                 />
               </div>
               <p>{product.subtitle}</p>
+            </Link>
+            <Link href={`products/${product.id}`}>
+            <br />
+             <p>try dynmic route</p>
+            <p>link to {` toto ${product.id}`} </p>
             </Link>
           </div>
         ))}
