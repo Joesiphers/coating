@@ -15,11 +15,12 @@ export const metadata = {
 export default function Page() {
   return (<>
     <Aosinit/>
-    <div className="flex min-h-screen flex-col items-center justify-between">
+    <Link href={"/login?modal=true"} className="m-4">
+    <button>login Intercept Modal</button></Link>
+   <div className="flex min-h-screen flex-col items-center justify-between">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex"></div>
+     <div className="relative flex justify-center w-full">    
 
-      <div         className="relative flex justify-center w-full"
-      >
         <Image data-aos="out" data-aos-anchor-placement="center-top"
           className="dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert relative"
           src="/image/offshore-platform.jpg"
@@ -44,7 +45,7 @@ export default function Page() {
           <p className="m-4">details details details details details details details details details details details details details details details details details details details details details details details details details details details </p>
         </div>
           <hr className="bg-slate-700 w-10/12 my-4" />
-      <section className=" mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left " > 
+        <section className=" mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left " > 
         <Link href="/products" data-aos="fade-left" data-aos-duration="800"
                   className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
         >
@@ -179,7 +180,18 @@ export default function Page() {
         </Link>
       </section>
       <Link href="./admin/login">login</Link>
+      <Link href={{
+        pathname:"./",
+        query:{modal:true,message:"Please login",content:"login"}
+      }}>
+      <button>loginModal</button></Link>
+      <Link href={"/login?modal=true"} className="m-4">
+      <button>login Intercept Modal</button></Link>
     </div>
 
     </>  );
 }
+/**
+ * 
+ * 
+ */

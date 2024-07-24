@@ -12,7 +12,8 @@ export default async function Products() {
   catch(err){
     console.log("no products Array received" ,err)
     const message=err instanceof Error ? err.message : "unknown Error";
-    return <Modal info={message} />
+    //throw err;
+    return <Modal info={message}  />
   }
   let products;
   if (productsArray) { products = parseProducts(productsArray)} 
