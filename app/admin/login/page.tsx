@@ -19,7 +19,7 @@ export default function Login() {
           {...register("email", { required: true, minLength: 3 })}
           className="my-2 mx-auto border-solid border border-indigo-600 rounded block"
         />{" "}
-        <label htmlFor="userName">userName min 3char</label>
+        <label htmlFor="userName">userName</label>
         <input
           type="text"
           {...register("userName", { minLength: 2, maxLength: 12 })}

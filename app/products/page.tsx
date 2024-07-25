@@ -13,7 +13,7 @@ export default async function Products() {
     console.log("no products Array received" ,err)
     const message=err instanceof Error ? err.message : "unknown Error";
     //throw err;
-    return <Modal info={message}  />
+    return <Link href="?modal=true"> <Modal info={message} /></Link>
   }
   let products;
   if (productsArray) { products = parseProducts(productsArray)} 

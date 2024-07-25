@@ -11,13 +11,21 @@ export default function Modal (props){
     const message=searchParams.get("message")
     const content= searchParams.get("content")
     const pathName=usePathname()
-console.log(searchParams,modal, message,content)
+console.log(searchParams,modal, message,content,pathName)
     if (!modal){return null}
-    return (<div className="w-6/12 m-auto border rounded py-12 h-[60vh] my-8 
+    return (<div className="w-6/12 m-auto border rounded py-4 h-[60vh] my-8 
         absolute top-12 left-2/4 translate-x-[-50%]
         f text-white z-10
         bg-slate-600/[0.6]
     ">
+               
+        <div className="relative text-right pr-4 text-2xl">
+             <Link href={pathName}  >
+             <button onClick={()=>{console.log(pathName)}}>
+            X</button>
+            </Link>
+            </div>
+
         <div className="m-4"> Attention : {props.info }{message} </div>
         <div className="w-3/4 overflow-auto m-auto"       >
         {props.children}

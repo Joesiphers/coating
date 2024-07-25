@@ -15,8 +15,6 @@ export const metadata = {
 export default function Page() {
   return (<>
     <Aosinit/>
-    <Link href={"/login?modal=true"} className="m-4">
-    <button>login Intercept Modal</button></Link>
    <div className="flex min-h-screen flex-col items-center justify-between">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex"></div>
      <div className="relative flex justify-center w-full">    
@@ -179,14 +177,7 @@ export default function Page() {
           </p>
         </Link>
       </section>
-      <Link href="./admin/login">login</Link>
-      <Link href={{
-        pathname:"./",
-        query:{modal:true,message:"Please login",content:"login"}
-      }}>
-      <button>loginModal</button></Link>
-      <Link href={"/login?modal=true"} className="m-4">
-      <button>login Intercept Modal</button></Link>
+
     </div>
 
     </>  );
