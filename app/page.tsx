@@ -31,7 +31,7 @@ export default function Page() {
         />
 
         <div className="rounded absolute top-[55%] left-[60%]">
-          <p className="text-white text-3xl">Coated to last</p> 
+          <p className="ml-2 text-white text-2xl md:text-4xl lg:text-5xl">Coated to last</p> 
         </div>
 
       </div>
@@ -45,8 +45,9 @@ export default function Page() {
           <hr className="bg-slate-700 w-10/12 my-4" />
         <section className=" mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left " > 
         <Link href="/products" data-aos="fade-left" data-aos-duration="800"
-                  className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-        >
+              className="group rounded-lg border border-transparent px-5 py-4 
+              transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30
+              "   >
           <h2 className={`m-12 text-2xl font-semibold`}>
             Internal Coatted Pipes Projects
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
