@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function Header() {
   // console.log(auth());
   return (
-    <div className="fixed z-50 w-full h-20 p-1 bg-white ">
+    <div className="fixed top-0 left-0 z-50 w-full h-20 p-1 bg-white ">
       <Link href="/">
         <div className="w-full justify-left relative z-20 px-4 m-2 inline-flex">
           <Image src="/image/logo.jpg" alt="WanWei" width={25} height={25} />

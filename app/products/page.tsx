@@ -1,23 +1,31 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getProduct } from "api/gets";
-import {parseProducts} from "utils/utils"
+import { parseProducts } from "utils/utils";
 import Modal from "@/components/layout/Modal";
+import { parse_title_to_url } from "utils/utils";
 
 export default async function Products() {
-  let productsArray =null;
-  try { productsArray = await getProduct("all");
-    console.log("Array", productsArray)
-  }
-  catch(err){
-    console.log("no products Array received" ,err)
-    const message=err instanceof Error ? err.message : "unknown Error";
-    //throw err; 
-    //call the modal 
-    return <Link href="?modal=true"> <Modal info={message} /></Link>
+  let productsArray = null;
+  try {
+    productsArray = await getProduct("all");
+    console.log("Array", productsArray);
+  } catch (err) {
+    console.log("no products Array received", err);
+    const message = err instanceof Error ? err.message : "unknown Error";
+    //throw err;
+    //call the modal
+    return (
+      <Link href="?modal=true">
+        {" "}
+        <Modal info={message} />
+      </Link>
+    );
   }
   let products;
-  if (productsArray) { products = parseProducts(productsArray)} 
+  if (productsArray) {
+    products = parseProducts(productsArray);
+  }
   return (
     <div className="w-5/6 m-auto ">
       <div className="w-5/6 my-8 mx-auto">
@@ -34,21 +42,23 @@ export default async function Products() {
           className="rounded"
         />
       </div>
-      <div className="text-sky-600">Utilise Precision equitment for corrosion proof coating</div>
-      <div className="flex justify-between my-12 grid md:grid-cols-4 gap-6">
+      <div className="text-sky-600">
+        Utilise Precision equitment for corrosion proof coating
+      </div>
+      <div className=" justify-between my-12 md:grid md:grid-cols-4 md:gap-6">
         {products.map((product, index) => (
           <div
-            className="m-2 shadow-xl border-solid border-2 border-slate-300 rounded-md w-3/5 md:w-full h-64 overflow-hidden
+            className="p-4 mx-auto my-8 md:mx-2 shadow-xl border-solid border-2 border-slate-300 rounded-md w-3/5 md:w-full h-64 overflow-hidden
                           transition-colors hover:border-gray-400 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30
-
             "
             key={index}
           >
             <Link
               href={{
-                pathname: `./products/detail`,
+                pathname: `./products/${parse_title_to_url(product.title)}`,
                 query: { id: product.id },
               }}
+              scroll={true}
             >
               <div className=" h-12 m-2">{product.title}</div>
               <div className=" h-20 blokc align-middle">
@@ -63,9 +73,9 @@ export default async function Products() {
               <p>{product.subtitle}</p>
             </Link>
             <Link href={`products/${product.id}`}>
-            <br />
-             <p>try dynmic route</p>
-            <p>link to {` toto ${product.id}`} </p>
+              <br />
+              <p>try dynmic route</p>
+              <p>link to {` toto ${product.id}`} </p>
             </Link>
           </div>
         ))}

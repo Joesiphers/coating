@@ -8,23 +8,23 @@ import Footer from "components/layout/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 // <AuthProvider></AuthProvider>
-export default function RootLayout({modal,
-  children
+export default function RootLayout({
+  modal,
+  children,
 }: {
   children: React.ReactNode;
-  modal: React.ReactNode
+  modal: React.ReactNode;
 }) {
   return (
     <html>
       <GoogleTagManager gtmId="GTM-M2W2BLCD" />
       <body className={inter.className}>
         <Header />
-        <main className="min-h-[94vh] pt-16 text-center">
+        <main className="min-h-[94vh] mt-20 text-center">
           {modal /*as slot*/}
           {children}
-          </main>
-          <Footer />
-      
+        </main>
+        <Footer />
       </body>
       <GoogleAnalytics gaId="G-2JMP8VV00S" />
     </html>
