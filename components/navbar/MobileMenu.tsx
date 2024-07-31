@@ -26,7 +26,7 @@ export default function MobiMenu() {
   return (
     <Popover className="relative">
       <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-        <span>
+       {/* <span>
           <Image
             src="/image/m.svg"
             width={34}
@@ -34,7 +34,7 @@ export default function MobiMenu() {
             style={{ width: "auto" }}
             alt="menu"
           />
-        </span>
+        </span>*/}
         <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
       </Popover.Button>
 

@@ -28,8 +28,8 @@ export default async function Products() {
   }
   return (
     <div className="w-5/6 m-auto ">
-      <div className="w-5/6 my-8 mx-auto">
-        <p className="text-4xl text-sky-600 m-12">Pre-Coated Pipes</p>
+      <div className="w-5/6 mx-auto">
+        <p className="text-4xl text-sky-600 mb-4">Pre-Coated Pipes</p>
 
         <Image
           src="/image/coatedpipes.jpg"

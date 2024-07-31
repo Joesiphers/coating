@@ -5,7 +5,7 @@ import menuItems from "./menuItems";
 
 export default function Navbar() {
   const bar = (
-    <ul className=" gap-4 text-sm md:flex md:items-end">
+    <ul className=" gap-2 text-sm md:flex md:items-end">
       {menuItems.map((item) => {
         return (
           <Link href={item.href} key={item.name}>
@@ -19,7 +19,7 @@ export default function Navbar() {
   return (
     <>
       <div className="md:hidden text-right">{<MobiMenu />}</div>
-      <div className="hidden md:flex  px-0.5  relative top-8 pt-2 justify-end">
+      <div className="hidden md:flex  px-0.5  relative justify-end">
         {bar}
       </div>
     </>
