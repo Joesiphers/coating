@@ -1,4 +1,6 @@
+
 import { signInGithub, signInGoogle } from "./signin";
+import { signIn } from "@/auth";
 /*        <form action={signInS ("github")}>
           <button type="sumit">GitHub</button>
         </form>
@@ -14,7 +16,7 @@ export default async function Tech() {
       </div>
       <div>
         <p className="text-4xl m-2">Google</p>
-        <form action={signInGoogle}>
+        <form action={async()=>{"use server";await signIn("google")}}>
           <button type="sumit">Google</button>
         </form>
       </div>
@@ -22,6 +24,12 @@ export default async function Tech() {
         <p className="text-4xl m-2">Github</p>
         <form action={signInGithub}>
           <button type="sumit">Github</button>
+        </form>
+      </div>
+      <div>
+        <p className="text-4xl m-2">Google</p>
+        <form action={signInGoogle}>
+          <button type="sumit">Google</button>
         </form>
       </div>
     </div>
