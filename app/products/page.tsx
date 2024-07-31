@@ -13,14 +13,13 @@ export default async function Products() {
   } catch (err) {
     console.log("no products Array received", err);
     const message = err instanceof Error ? err.message : "unknown Error";
-    //throw err;
+    //throw err; //goes to error.js will pop up a error on web. not good
     //call the modal
-    return (
-      <Link href="?modal=true">
-        {" "}
+    /*return (
+
         <Modal info={message} />
-      </Link>
-    );
+
+    );*/
   }
   let products;
   if (productsArray) {

@@ -1,6 +1,6 @@
 "use client"
 
-import { useSearchParams,usePathname } from "next/navigation"
+import { useSearchParams,usePathname,useRouter } from "next/navigation"
 import Link from "next/link"
 import Login from "@/app/admin/login/page";
 
@@ -11,8 +11,10 @@ export default function Modal (props){
     const message=searchParams.get("message")
     const content= searchParams.get("content")
     const pathName=usePathname()
+    const router=useRouter()
+
 console.log(searchParams,modal, message,content,pathName)
-    if (!modal){return null}
+  //  if (!modal){return null}
     return (<div className="w-6/12 m-auto border rounded py-4 h-[60vh] my-8 
         absolute top-12 left-2/4 translate-x-[-50%]
         f text-white z-10
@@ -33,7 +35,7 @@ console.log(searchParams,modal, message,content,pathName)
         </div>
         <Link href={pathName}  >
         <div className="text-center mt-6">
-            <button onClick={()=>{console.log(pathName)}}>
+            <button onClick={()=>{router.back()}}>
             Close</button>
             </div>
         </Link>
