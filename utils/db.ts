@@ -6,13 +6,13 @@ export async function dbquery(
   values?: number[] | string[] | "all",
 ) {
   const pool = new Pool({
-    connectionString: DATABASE_URL,
+    connectionString: DATABASE_URL, 
     ssl: { require: true },
   });
   try {
     const client = await pool.connect();
     const res = await client.query(query, values);     
-    console.log("db access connected")
+    console.log("db access connected", query, values)
     client.release();
     //console.log("quering : ", query, values, res.rows);
     return res.rows;

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getProduct } from "api/gets";
+import { getProduct,getProductSummery } from "api/gets";
 import { parseProducts } from "utils/utils";
 import Modal from "@/components/layout/Modal";
 import { parse_title_to_url } from "utils/utils";
@@ -8,7 +8,8 @@ import { parse_title_to_url } from "utils/utils";
 export default async function Products() {
   let productsArray = null;
   try {
-    productsArray = await getProduct("all");
+    productsArray = await getProductSummery("all");
+    //productsArray = await getProduct("all");
     console.log("Array", productsArray);
   } catch (err) {
     console.log("no products Array received", err);
@@ -60,7 +61,7 @@ export default async function Products() {
               scroll={true}
             >
               <div className=" h-12 m-2">{product.title}</div>
-              <div className=" h-20 blokc align-middle">
+              <div className=" h-20 block align-middle ">
                 <Image
                   src={`${product.imgurl[0]}`}
                   alt=""
@@ -71,7 +72,7 @@ export default async function Products() {
               </div>
               <p>{product.subtitle}</p>
             </Link>
-            <Link href={`products/${product.id}`}>
+            <Link href={`products/detals?id=${product.id}`}>
               <br />
               <p>try dynmic route</p>
               <p>link to {` toto ${product.id}`} </p>

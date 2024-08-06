@@ -28,5 +28,5 @@ export async function signInS(formdata) {
 }
 
 export async function signOutS() {
-  return await signOut();
+  return await signOut({redirectTo:"/contact"});
 }

@@ -19,19 +19,22 @@ export default async function Tech() {
             await signIn("google");
           }}
         >
-          <button type="sumit">Google</button>
+          <button type="submit">Google</button>
         </form>
       </div>
       <div>
         <p className="text-4xl m-2">Github</p>
         <form action={signInGithub}>
-          <button type="sumit">Github</button>
+          <button type="submit">signInGithub</button>
         </form>
       </div>
       <div>
-        <p className="text-4xl m-2">Google</p>
-        <form action={signInGoogle}>
-          <button type="sumit">Google</button>
+        <p className="text-4xl m-2">Github</p>
+        <form action={async () => {
+            "use server";
+            await signIn("github");
+          }}>
+          <button type="submit">GitHub SignIn</button>
         </form>
       </div>
     </div>
