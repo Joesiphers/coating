@@ -10,9 +10,12 @@ export async function dbquery(
     ssl: { require: true },
   });
   try {
+   // console.log("db.ts attempt connection", query, values)
+
     const client = await pool.connect();
+   // console.log("db.ts access connected", query, values)
     const res = await client.query(query, values);     
-    console.log("db access connected", query, values)
+    //console.log("db.ts get res", query, values)
     client.release();
     //console.log("quering : ", query, values, res.rows);
     return res.rows;

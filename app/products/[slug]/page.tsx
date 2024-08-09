@@ -21,8 +21,7 @@ export default async function Page({ searchParams,params }: { params: { slug: st
     } catch (err) {
       return <Modal info={err}>test getProduct Error</Modal>;
     }
-  const apires= await fetch('http://localhost:3000/api/products?id=1').then(res=>(res))
- // console.log ("apires",apires)
+  
   const res=productdatails[0]
     console.log("productdatails", productdatails, parseInt(id),res, typeof(id), );
 return(  <>
@@ -32,7 +31,7 @@ return(  <>
     <div className="text-xl md:grid md:grid-cols-2 m-4 ">
         {JSON.parse(res.imgurl).map((url) => (
           <Image
-            key={res.imgurl}
+            key={url}
             src={url}
             alt="img"
             width={500}

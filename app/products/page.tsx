@@ -4,6 +4,7 @@ import { getProduct,getProductSummery } from "api/gets";
 import { parseProducts } from "utils/utils";
 import Modal from "@/components/layout/Modal";
 import { parse_title_to_url } from "utils/utils";
+import { Product } from "../../types";
 
 export default async function Products() {
   let productsArray = null;
@@ -22,7 +23,7 @@ export default async function Products() {
 
     );*/
   }
-  let products;
+  let products:Product[]=[];
   if (productsArray) {
     products = parseProducts(productsArray);
   }

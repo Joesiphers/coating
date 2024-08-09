@@ -14,10 +14,14 @@ export default async function Page({
 
   return (
     <div>
-      <div className="m-8 text-3xl font-serif">{title}</div>
-      <div  className="m-4">{subtitle}</div>
-      <div>{JSON.parse(imgurl).map(url=><img key={url} src={url} alt="img"  width={300} className="m-auto"/> )}</div>
-      <div className="m-4">{description}</div>
+      <div className=" text-4xl p-4 font-serif">{title}</div>
+      <div  className="m-4">----- {subtitle}</div>
+      <div className="text-xl md:grid md:grid-cols-2 m-4 ">
+      {JSON.parse(imgurl).map((url:string)=><img key={url} src={url} alt="img"  width={300} className="m-auto"/> )}
+        </div>
+        <div className="text-xl p-4 w-5/6 m-auto whitespace-pre-line text-left">
+        {description}
+        </div>
     </div>
   );
 }

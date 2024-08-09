@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getProject } from "@/api/gets";
 import { parseProducts } from "@/utils/utils";
+import { Product } from "@/types";
 
 
 export default async function Projects() {
@@ -9,13 +10,12 @@ export default async function Projects() {
   projects = parseProducts(projects);
   console.log(projects, "project page received");
 
-  return (
-    <div className="m-8">
+  return (<>
       <div>
         <p className="text-4xl m-4">20 Years with Ceramic Epoxy Coting</p>
       </div>
-      <div className="mb-32 grid  lg:mb-0 lg:grid-cols-4 text-left">
-        {projects.map((item, index) => {
+      <div className="text-xl md:grid md:grid-cols-2 m-4 ">
+      {projects.map((item:Product, index) => {
           return (
             <div className="m-4" key={index}>
               <Link
@@ -23,6 +23,7 @@ export default async function Projects() {
                   pathname: `/projects/projectDetails`,
                   query: { id: item.id },
                 }}
+                scroll={true}
               >
                 <div className={`mb-3 text-2xl font-semibold h-16 `}>
                   <p className="">{item.title}</p>
@@ -50,6 +51,6 @@ export default async function Projects() {
           );
         })}
       </div>
-    </div>
+      </>
   );
 }

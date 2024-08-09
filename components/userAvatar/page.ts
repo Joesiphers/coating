@@ -1,9 +1,12 @@
 import { auth } from "@/auth";
+import { Session } from "next-auth";
 
-export default async function UserAvatar() {
-  const session = await auth();
+export default async function UserAvatar():Promise<string|null|undefined > {
+  const session   = await auth();
   if (!session) {
-    return "error";
+    return null
   }
-  console.log("auth UserAvatar session", session);
+    console.log("auth UserAvatar session", session.user);
+return session?.user?.image
+
 }
