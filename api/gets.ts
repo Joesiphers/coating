@@ -1,7 +1,7 @@
 import { dbquery } from "utils/db"; /*import from absolute path need to edit jsconfig.json*/
 
 export async function getProduct(id: number | "all") {
-  console.log("getProducts with" , id)
+  console.log("api/gets getProducts with" , id)
   try{
     if (id=="all"){
       return await dbquery(`SELECT * FROM products`)
@@ -18,8 +18,8 @@ export async function getProduct(id: number | "all") {
   }
 }
 
-export async function getProductSummery(id: number | "all") {
-  console.log("getProducts with" , id)
+export async function getProductSummary(id: number | "all") {
+  //console.log("api/gets getProductsSummary with" , id)
   try{
     if (id=="all"){
       return await dbquery(`SELECT id, title, imgurl,subtitle FROM products`)

@@ -1,17 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getProduct,getProductSummery } from "api/gets";
+import { getProduct,getProductSummary } from "api/gets";
 import { parseProducts } from "utils/utils";
 import Modal from "@/components/layout/Modal";
 import { parse_title_to_url } from "utils/utils";
 import { Product } from "../../types";
+import { getAllProducts_gql } from "@/api/lib";
 
 export default async function Products() {
   let productsArray = null;
+  
+  const wp_products= await getAllProducts_gql ();
+  console.log("wp products", wp_products?.nodes)
   try {
-    productsArray = await getProductSummery("all");
+    productsArray = await getProductSummary("all");
     //productsArray = await getProduct("all");
-    console.log("Array", productsArray);
+    //console.log("Array", productsArray);
   } catch (err) {
     console.log("no products Array received", err);
     const message = err instanceof Error ? err.message : "unknown Error";

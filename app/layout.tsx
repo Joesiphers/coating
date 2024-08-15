@@ -20,10 +20,10 @@ export default function RootLayout({
       <GoogleTagManager gtmId="GTM-M2W2BLCD" />
       <body className={inter.className}>
         <Header />
-        <main className="min-h-[94vh] mt-10 md:mt-12 text-center">
-          {modal /*as slot*/}
-          {children}
-        </main>
+          <main className="relative min-h-[89vh] top-10 pb-8 md:mt-8 text-center block">
+            {modal /*as slot*/}
+            {children}
+          </main>
         <Footer />
       </body>
       <GoogleAnalytics gaId="G-2JMP8VV00S" />

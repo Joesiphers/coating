@@ -4,6 +4,7 @@ import { useGetProjectsSWR } from "../../api/useSWRAPI";
 import { parseProducts } from "@/utils/utils";
 import { Button } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function Page({ searchParams }) {
   const [inputState, setInputState] = useState({
@@ -17,6 +18,7 @@ export default function Page({ searchParams }) {
     [{ name: string; file: Blob; url: string }]
   >([]);
   const { id } = searchParams;
+  const router=useRouter();
   const handleInputChange = (field, value) => {
     const updateData = { ...inputState, [field]: value };
     setInputState(updateData);
@@ -58,6 +60,7 @@ export default function Page({ searchParams }) {
   };
   const handleCancel = () => {
     setInputState(parseProducts(data.res)[0]);
+    router.back()
   };
   //console.log (id)
   const { data, isLoading, error } = useGetProjectsSWR(
@@ -96,19 +99,22 @@ export default function Page({ searchParams }) {
         />
       </div>
       <div className="flex justify-center">
-        {inputState.imgurl.map((i) => (
-          <Image key={i} src={i} alt="img" width={200} height={200} />
+        <p>inputimg</p>
+        {//preview image
+        
+        inputState.imgurl[0] && inputState.imgurl.map((i) => (
+          <Image key={i} src={i} alt="img" width={190} height={190} />
         ))}
-        {
-          //preview image
+        {//existing images file
+          
           files.map((i) => {
             return (
               <Image
-                key={i.id}
+                key={i.name}
                 src={i.url}
                 alt="img"
-                width={200}
-                height={200}
+                width={210}
+                height={210}
               />
             );
           })

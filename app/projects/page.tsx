@@ -14,10 +14,13 @@ export default async function Projects() {
       <div>
         <p className="text-4xl m-4">20 Years with Ceramic Epoxy Coting</p>
       </div>
-      <div className="text-xl md:grid md:grid-cols-2 m-4 ">
-      {projects.map((item:Product, index) => {
+      <div className="text-xl md:grid gap-8 md:grid-cols-2 m-4 ">
+        {projects.map((item:Product, index) => {
           return (
-            <div className="m-4" key={index}>
+            <div 
+            className="p-4 mx-auto my-8 md:mx-2 shadow-xl border-solid border-2 border-slate-300 rounded-md w-3/5 md:w-full h-64 overflow-hidden
+              transition-colors hover:border-gray-400 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
+            key={index}  >
               <Link
                 href={{
                   pathname: `/projects/projectDetails`,
@@ -25,28 +28,25 @@ export default async function Projects() {
                 }}
                 scroll={true}
               >
-                <div className={`mb-3 text-2xl font-semibold h-16 `}>
-                  <p className="">{item.title}</p>
-                  <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+                <div className={`mb-3 text-xl md:text-2xl font-semibold h-16 `}>
+                  <p className=" h-12 m-2">{item.title}</p>
+                  <p className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
                     -&gt;
-                  </span>
+                  </p>
                 </div>
                 <div className="relative inline justify-center">
-                  {<img src={item.imgurl[0]} alt="img" width={200} />}
-                  {/*    {item.imgurl.map(url=>  <Image
-                        alt="img"
-                        src={url}
-                        width={300}
-                        height={300}
-                        className="inline"
-                           />
-            )
-             }  */}
+                <Image
+                  src={`${item.imgurl[0]}`}
+                  alt=""
+                  width={200}
+                  height={200}
+                  className="m-auto"
+                />
                 </div>
-              </Link>
               <p className={`m-0  text-sm overflow-hidden  opacity-50`}>
                 {item.description}
-              </p>
+              </p>              </Link>
+
             </div>
           );
         })}

@@ -13,7 +13,7 @@ export type ProductDetails = {
   };
 export default async function Page({ searchParams,params }: { params: { slug: string },searchParams: { id: string} }
   ) {
-  console.log("slug prarams", params, "searchParams", searchParams);
+  //console.log("slug prarams", params, "searchParams", searchParams);
   const { id } = searchParams;
   let productdatails;
     try {
@@ -23,12 +23,13 @@ export default async function Page({ searchParams,params }: { params: { slug: st
     }
   
   const res=productdatails[0]
-    console.log("productdatails", productdatails, parseInt(id),res, typeof(id), );
+    //console.log("[slug] productdatails", productdatails, parseInt(id),res, typeof(id), );
 return(  <>
     <div className="text-4xl p-4">{res.title} </div>
     <div>---- {res.subtitle}: </div>
 
-    <div className="text-xl md:grid md:grid-cols-2 m-4 ">
+    <div className="text-xl flex justify-center">
+      <div>
         {JSON.parse(res.imgurl).map((url) => (
           <Image
             key={url}
@@ -39,6 +40,7 @@ return(  <>
             className="inline py-4"
           />
         ))}
+      </div>  
     </div>
     <div className="text-xl p-4 w-5/6 m-auto whitespace-pre-line text-left">
       {res.description}
