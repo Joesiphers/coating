@@ -1,7 +1,6 @@
 //import styles from "./admin.module.css";
 
 import Link from "next/link";
-import Navbar from "@/app/components/navbar/Navbar";
 import Register from "./register";
 //import LoginPage from "./login";
 import { signOutS } from "./nextauth/signin";

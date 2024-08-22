@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { getProduct,getProductSummary } from "api/gets";
 import { parseProducts } from "utils/utils";
-import Modal from "@/components/layout/Modal";
 import { parse_title_to_url } from "utils/utils";
 import { Product } from "../../types";
 import { getAllProducts_gql } from "@/api/lib";

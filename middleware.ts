@@ -20,7 +20,8 @@ import { auth } from "@/auth"
 export default auth((req) => {
   if (!req.auth && req.nextUrl.pathname.startsWith("/admin")) {
     //console.log("middleware unauth")
-    const newUrl = new URL("/contact", req.nextUrl.origin)
+    // if no login and try to access Admin folder, will be redirect to /login
+    const newUrl = new URL("/login", req.nextUrl.origin)
     return Response.redirect(newUrl)
   }
 })

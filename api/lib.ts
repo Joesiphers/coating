@@ -1,3 +1,5 @@
+
+/**api for using Wordpress as backend */
 const resturl=process.env.WP_REST_BASE_URL
 const GQL_URL="http://34.19.95.27/wordpress/graphql" //process.env.WP_GQL_BASE_URL
 export async function getProducts (query?:string,){  

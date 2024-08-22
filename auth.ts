@@ -6,7 +6,7 @@ import Google from "next-auth/providers/google"
 
 export const {handlers, signIn, signOut, auth } = NextAuth({
   providers: [GitHub,Google],
-  pages: {      signIn: '/contact',   },   //to specify when login goest to  custom login page, not default nextAuth login page.
+  pages: {      signIn: '/login',   },   //to specify when login goest to  custom login page, not default nextAuth login page.
 
 // check auth in route /dashboard ????//
   callbacks: {

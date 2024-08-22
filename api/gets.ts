@@ -1,3 +1,5 @@
+/**api use nodejs, nextjs as server to fetch data from DB */
+
 import { dbquery } from "utils/db"; /*import from absolute path need to edit jsconfig.json*/
 
 export async function getProduct(id: number | "all") {

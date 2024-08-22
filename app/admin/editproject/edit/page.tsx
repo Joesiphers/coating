@@ -1,12 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useGetProjectsSWR } from "../../api/useSWRAPI";
 import { parseProducts } from "@/utils/utils";
 import { Button } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-export default function Page({ searchParams }) {
+export default function Page({ searchParams}:{searchParams:{id?:string}} ) {
   const [inputState, setInputState] = useState({
     id: "",
     subtitle: "",
@@ -15,17 +15,18 @@ export default function Page({ searchParams }) {
     description: "",
   });
   const [files, setFiles] = useState<
-    [{ name: string; file: Blob; url: string }]
-  >([]);
+   { name: string; file: Blob; url: string|null|ArrayBuffer } []  >([]);
   const { id } = searchParams;
   const router=useRouter();
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field:string , value:string) => {
     const updateData = { ...inputState, [field]: value };
     setInputState(updateData);
   };
-  const handleImageUpload = (imgFiles) => {
-    console.log(imgFiles[0], "imgs", files);
-    for (let i = 0; i < imgFiles.length; i++) {
+  const handleImageUpload = (e:ChangeEvent<HTMLInputElement>) => {
+    //console.log(imgFiles[0], "imgs", files);
+    const  imgFiles =e.target.files;
+    if ( imgFiles &&  imgFiles.length>0){
+          for (let i = 0; i < imgFiles.length; i++) {
       const fileReader = new FileReader();
       fileReader.onload = () => {
         setFiles([
@@ -39,6 +40,7 @@ export default function Page({ searchParams }) {
         //  setInputState({ ...inputState, imgurl: updateUrl });
       };
       fileReader.readAsDataURL(imgFiles[i]);
+    }
     }
   };
   const handleSave = async () => {
@@ -73,9 +75,6 @@ export default function Page({ searchParams }) {
       setInputState(uData);
     }
   }, [data]);
-  // "api/projects?id=${id}"-->http://localhost:3000/admin/editproject/api/projects?id=2
-  //`../api/projects?id=${id}`--> http://localhost:3000/admin/api/projects?id=2
-  //useEffect(()=>{},[])
   if (isLoading) return <div>Loading</div>;
   //console.log(inputState,data.res[0])
   return (
@@ -95,7 +94,7 @@ export default function Page({ searchParams }) {
         <input
           className="w-auto border-sky-500 border-2"
           type="file"
-          onChange={(e) => handleImageUpload(e.target.files)}
+          onChange={(e) => handleImageUpload(e)}
         />
       </div>
       <div className="flex justify-center">
