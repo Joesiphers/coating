@@ -6,43 +6,46 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import EditableTr from "./editAbleTr";
 import EditPage from "./editPage";
+import { Product,ProductRecord } from "@/types";
+export type ImageFile = { id: number; file: Blob; url: string | ArrayBuffer | null }
 
-const parseProducts = (productsArray) => {
+const parseProducts = (productsArray:ProductRecord[] ) => {
   let productsDataObj = (productsArray);
-  //console.log(productsArray)
+  console.log( "editProduct.page, parseProducts :",productsArray)
   let updateData = [];
   for (let i of productsDataObj) {
-    updateData.push({ ...i, imgurl: JSON.parse(i.imgurl) });
+    const imgurlArray:string[] =JSON.parse (i.imgurl)
+    updateData.push({ ...i, imgurl:imgurlArray });
     }
-return updateData;;}
+return updateData}
 const tdcss = "border-solid border-2 border-indigo-600";
-const EditableTable = ({ searchParams }) => {
+const EditableTable = ({ }) => {
   //const params = useSearchParams();
  // const { products } = searchParams;
   //const [productsData, setProducts]=useState([])
  // const getProducts=async ()=>await getProductsSwr ("api/products?id=all");
 
- const [productsData, setproductsData] = useState([]);
- const [editableRowId, setEditableRowId] = useState(null);
- const [prevproductsData, setPrevproductsData] = useState(null);
- const [editItem, setEditItem]=useState(null)
- const [files, setFiles] = useState<
-   { id: number; file: File | null; url: string | ArrayBuffer | null }[]
- >([]);
+ const [productsData, setproductsData] = useState<Product[]|null> ([]);
+ const [editableRowId, setEditableRowId] = useState<Number|null> (null);
+ const [prevproductsData, setPrevproductsData] = useState<Product[]|null>(null);
+ const [editItem, setEditItem]=useState<Product[]|null> (null)
+ const [files, setFiles] = useState<ImageFile [] >([]);
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
- const { data, isLoading, error } = useSWR("api/products?id=all", fetcher);
- //console.log(data, isLoading, error)
+const { data, isLoading, error } = useSWR<{res:ProductRecord[]}>("api/products?id=all", fetcher);
+ console.log("editProduct.page, ",data, isLoading, error)
  useEffect(()=>{
-  if(data && data.res){ setproductsData (parseProducts(data.res))}
+  if(data && data.res){
+    const products = parseProducts(data.res)
+    setproductsData (products)}
 },[data])
 if (isLoading) return <div>Loading</div>
 if (error ) return <div>Error</div>
 
-  const handleEdit = (id) => {
+  const handleEdit = (id:number) => {
     setEditableRowId(id);
     setPrevproductsData(productsData);
-    setEditItem(productsData.filter(i=>i.id===id) )
+    productsData&&setEditItem(productsData.filter(i=>i.id===id) )
     
   };
   const handleCancel = () => {
@@ -51,21 +54,22 @@ if (error ) return <div>Error</div>
     setFiles([]);
   };
 
-  const handleSave = async (id) => {
-    const toSaveData = productsData.filter((item) => item.id === id);
+  const handleSave = async (id:number) => {
+//    if (productsData&&files) {}
+    const toSaveData = productsData&&productsData.filter((item) => item.id === id);
     const toAddFiles = Object.values(files).filter((item) => item.id === id);
     const formdata = new FormData();
-    formdata.append("data", JSON.stringify(toSaveData[0]));
+    if (toSaveData) {formdata.append("data", JSON.stringify(toSaveData[0]));}
     for (let i = 0; i < toAddFiles.length; i++) {
       formdata.append("files", toAddFiles[i].file);
     }
     // formdata.append("files", toAddFiles);
-    console.log("tosave", toSaveData, toAddFiles);
+    console.log("editProduct.page, tosave", toSaveData, toAddFiles);
     const response = await fetch(`api/products`, {
       method: "POST",
       body: formdata,
     }).then((res) => res.text());
-    console.log("response", JSON.stringify(response));
+    console.log("editProduct.page, response", JSON.stringify(response));
     setEditableRowId(null);
     // Implement logic to save changes to the backend or update state as needed
   };
@@ -78,7 +82,7 @@ if (error ) return <div>Error</div>
   };
   const handleImageUpload = (e, id) => {
     const choosedFiles = e.target.files;
-    console.log("files seee5", e);
+    console.log("editProduct.page, Handleimagefiles seee5", e);
     for (let i = 0; i < choosedFiles.length; i++) {
       const fileReader = new FileReader();
       const file = choosedFiles[i];
@@ -90,7 +94,7 @@ if (error ) return <div>Error</div>
       };
       fileReader.readAsDataURL(file);
     }
-    console.log("files", files);
+    console.log("editProduct.page, Imagefiles", files);
   };
   const handleDeleteImage = (id, url) => {
     const updateFiles = files.filter((item) => {
@@ -112,7 +116,7 @@ if (error ) return <div>Error</div>
         deleteImageUrlInProductsData.push(p);
       }
     }
-    console.log("deleteImageUrlInProductsData", deleteImageUrlInProductsData);
+    console.log("editProduct.page,  deleteImageUrlInProductsData", deleteImageUrlInProductsData);
     setproductsData(deleteImageUrlInProductsData);
   };
   const handleDelete = (id) => {

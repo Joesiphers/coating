@@ -1,18 +1,29 @@
 import { updateProduct } from "@/api/updates";
-import { getProduct } from "api/gets";
+import { getProduct } from "api/nextjsApi";
 
 import fs from "fs";
+import { NextRequest, NextResponse } from "next/server";
 import path from "node:path";
-import { v4 as uuiv4 } from "uuid";
 
-export async function POST(request) {
+ type requestData ={
+  id:string,
+  
+
+}
+
+export async function POST(request:NextRequest) {
   console.log("req");
   //const req = fileUpload.array("files");
   const formData = await request.formData();
-  let recordData = JSON.parse(formData.get("data")); // formData.get("data");
+  let recordData 
+  let images:File; // formData.get("data");
+  if (formData){
+    const data =(formData.get("data")); // formData.get("data");
+    data? recordData = JSON.parse(data):null
+ 
   console.log(recordData, "recordData");
-  const images = formData.getAll("files") as File[];
-
+   images = formData.getAll("files");
+ }
   //console.log("images",typeof images, images);
   //path to save image in public/uploads/images
   const savePath = path.join("public", "uploads", "images");
@@ -23,7 +34,7 @@ export async function POST(request) {
   for (let image of images) {
     try {
       const buffer = await image.arrayBuffer();
-      await fs.writeFileSync(
+      fs.writeFileSync(
         path.join(savePath, image.name),
         Buffer.from(buffer, "base64"),
       );
@@ -55,17 +66,22 @@ export async function POST(request) {
     },
   });
 }
-export async function GET(request, response) {
+export async function GET(request:NextRequest, response:NextResponse) {
   const { searchParams } = new URL(request.url);
   // console.log("searchParams",searchParams)
   const id = searchParams.get("id");
   // console.log("id",id)
-  const res = await getProduct(id);
+  if (id){
+ try { const res = await getProduct(id);
   // console.log("res",res)
-  const product = await JSON.stringify(res);
-
-  //return response.status(200).json(res)
+  const product = JSON.stringify(res);
   return Response.json({ res });
+
+}catch(err){
+  throw new Error("product Route handler Eror")
+}
+}else {throw new Error (`Product Route Handler error with no id found`)}
+  //return response.status(200).json(res)
   /*   return new Response("res", {
       data:res,
       status: 200,

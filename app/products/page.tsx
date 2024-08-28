@@ -1,16 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getProduct,getProductSummary } from "api/gets";
-import { parseProducts } from "utils/utils";
+import { getProduct,getProductSummary } from "api/nextjsApi";
+import { parseProducts, wpProductGQLToObj } from "utils/utils";
 import { parse_title_to_url } from "utils/utils";
 import { Product } from "../../types";
-import { getAllProducts_gql } from "@/api/lib";
+import { getAllProducts_gql } from "@/api/wpApi";
 
 export default async function Products() {
   let productsArray = null;
-  
-  const wp_products= await getAllProducts_gql ();
-  console.log("wp products", wp_products?.nodes)
+  let products:Product[]=[];
+
+  try {  
+    const wp_products= await getAllProducts_gql ();
+    productsArray=wp_products.nodes;
+  console.log("ProductPage wp products", wp_products.nodes)
+    products=  wpProductGQLToObj(productsArray)
+  }catch(err){
+    console.error(err)
+    throw new Error ("fetching WP_Products error")
+  }
+/* use nextjs direct query DB 
   try {
     productsArray = await getProductSummary("all");
     //productsArray = await getProduct("all");
@@ -18,18 +27,18 @@ export default async function Products() {
   } catch (err) {
     console.log("no products Array received", err);
     const message = err instanceof Error ? err.message : "unknown Error";
-    //throw err; //goes to error.js will pop up a error on web. not good
-    //call the modal
-    /*return (
+        //throw err; //goes to error.js will pop up a error on web. not good
+      //call the modal
+    //  return (      <Modal info={message} />      );
+      if (productsArray) {
+        console.log("Products Page products :1 ", products)
+        products = parseProducts(productsArray);
+      }
 
-        <Modal info={message} />
+//  }
+  */
+console.log("Products Page products :", products)
 
-    );*/
-  }
-  let products:Product[]=[];
-  if (productsArray) {
-    products = parseProducts(productsArray);
-  }
   return (
     <div className="w-5/6 m-auto ">
       <div className="w-5/6 mx-auto">
@@ -41,7 +50,7 @@ export default async function Products() {
           fill={true}
           style={{
             objectFit: "contain",
-            position: "",
+            position:'',
           }}
           className="rounded"
         />

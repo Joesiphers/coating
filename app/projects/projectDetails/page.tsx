@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getProject } from "api/gets";
+import { getProject } from "api/nextjsApi";
 import Scroll from "@/utils/scrollToTop"
 
 export default async function Page({

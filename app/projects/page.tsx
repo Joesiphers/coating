@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getProject } from "@/api/gets";
+import { getProject } from "@/api/nextjsApi";
 import { parseProducts } from "@/utils/utils";
 import { Product } from "@/types";
 
@@ -15,7 +15,7 @@ export default async function Projects() {
         <p className="text-4xl m-4">20 Years with Ceramic Epoxy Coting</p>
       </div>
       <div className="text-xl md:grid gap-8 md:grid-cols-2 m-4 ">
-        {projects.map((item:Product, index) => {
+        {projects.map((item:Product, index:any) => {
           return (
             <div 
             className="p-4 mx-auto my-8 md:mx-2 shadow-xl border-solid border-2 border-slate-300 rounded-md w-3/5 md:w-full h-64 overflow-hidden

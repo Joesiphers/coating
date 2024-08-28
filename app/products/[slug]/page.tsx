@@ -1,4 +1,4 @@
-import { getProduct } from "api/gets";
+import { getProduct } from "api/nextjsApi";
 import Modal from "@/components/layout/Modal";
 import Image from "next/image";
 

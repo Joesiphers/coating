@@ -1,4 +1,4 @@
-import { getProject } from "@/api/gets";
+import { getProject } from "@/api/nextjsApi";
 import Link from "next/link";
 
 import { parseProducts } from "utils/utils";

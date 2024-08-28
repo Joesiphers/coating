@@ -1,4 +1,5 @@
-import { getProduct } from "api/gets";
+import { getProduct } from "api/nextjsApi";
+import {getProduct_gql}from "api/wpApi";
 import Image from "next/image";
 
 export default async function Page({
@@ -6,11 +7,11 @@ export default async function Page({
 }: {
   searchParams: { id: number };
 }) {
-  //const res = getProduct(params);
   const { id } = searchParams;
-  const res = await getProduct(id);
-  console.log("productdatails", res);
-  return <div> {UI(res[0])}</div>;
+  //const product = await getProduct(id);
+  const product=getProduct_gql (id)
+  console.log("productdatails", product);
+  return <div> {UI(product[0])}</div>;
 }
 export type ProductDetails = {
   id: number;
@@ -21,16 +22,16 @@ export type ProductDetails = {
   description: string;
   projectApplication?: string;
 };
-const UI = (res: ProductDetails) => (
+const UI = (product: ProductDetails) => (
   <>
-    <div className="text-4xl p-4">{res.title} </div>
-    <div>---- {res.subtitle}: </div>
+    <div className="text-4xl p-4">{product.title} </div>
+    <div>---- {product.subtitle}: </div>
 
     <div className="text-xl md:grid md:grid-cols-2 m-4 ">
       <div>
-        {JSON.parse(res.imgurl).map((url) => (
+        {JSON.parse(product.imgurl).map((url:string) => (
           <Image
-            key={res.imgurl}
+            key={product.imgurl}
             src={url}
             alt="img"
             width={500}
@@ -41,7 +42,7 @@ const UI = (res: ProductDetails) => (
       </div>
     </div>
     <div className="text-xl p-4 w-5/6 m-auto whitespace-pre-line text-left">
-      {res.description}
+      {product.description}
     </div>
     <div>{"project application cases"}</div>
   </>

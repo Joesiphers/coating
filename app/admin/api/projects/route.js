@@ -1,9 +1,8 @@
 import { updateProject } from "api/updates";
-import { getProject } from "api/gets";
+import { getProject } from "api/nextjsApi";
 
 import fs from "fs";
 import path from "node:path";
-import { v4 as uuiv4 } from "uuid";
 
 export async function POST(request) {
   console.log("req");

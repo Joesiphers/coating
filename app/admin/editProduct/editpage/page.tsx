@@ -4,12 +4,13 @@ import useSWR from "swr";
 import Image from "next/image";
 import Button from '@mui/material/Button';
 import Stack from "@mui/material/Stack";
+import { Product } from "@/types";
 
 
-const parseProducts = (productsArray) => {
+const parseProducts = (productsArray:Product[]) => {
   let productsDataObj = productsArray;
   let updateData = [];
-  for (let i of productsDataObj) {
+  for (let i of productsArray) {
     updateData.push({ ...i, imgurl: JSON.parse(i.imgurl) });
   }
   console.log("updateData", updateData);
@@ -17,7 +18,7 @@ const parseProducts = (productsArray) => {
   return updateData[0];
 };
 const tdcss = "border-solid border-2 border-indigo-600 flex";
-const EditPage = ({ searchParams }) => {
+const EditPage = ({ searchParams }:{searchParams:{id:string}} ) => {
   const { id } = searchParams;
   // console.log(searchParams, id, `api/products?id=${id}`, "searching");
 
@@ -44,7 +45,7 @@ const EditPage = ({ searchParams }) => {
    setItem(parseProducts(data.res))
   };
 
-  const handleSave = async (id) => {
+  const handleSave = async (id:number) => {
     const toSaveData = item;
     const toAddFiles = Object.values(files).filter((item) => item.id === id);
     const formdata = new FormData();
