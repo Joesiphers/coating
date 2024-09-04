@@ -4,8 +4,11 @@ export type Project ={
     subtitle:string;
     description:string;
     imgurl:string[];
-    features?:string[]
+    features?:string[];
+    productsUsed:string[]
+    
 }
+
 export type Product ={
     id:number
     title:string;
@@ -14,29 +17,40 @@ export type Product ={
     description:string;
     features?:string;
     projectApplication?: string;
+    technical:string;
+    certificates:string;
 }
-export type ProductRecord = {
-    id: number;
-    title: string;
-    subtitle: string;
-    imgurl: string;
-    description: string;
-    features?: string;
-    projectApplication?: string;
-  };
+
 export type ProductGQL ={
     title:string;
     databaseId:number;
-    coating:{
         subtitle:string;
         description:string;
         features?:string;
-        projectapplication:string|null
-    }
+        projectapplication?:string
+        technical:string;
+        certificates:string;
+
     podimages:{
         nodes:{
             guid:string;
         }[]
     }
    
+}
+export type ProjectGQL ={
+    title:string;
+    databaseId:number;
+        subtitle:string;
+        description:string;
+        features?:string;
+        productsUsed:string
+        technical:string;
+        
+
+    podimages:{
+        nodes:{
+            guid:string;
+        }[]
+    }
 }

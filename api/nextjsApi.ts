@@ -11,7 +11,9 @@ export async function getProduct(id: number | "all") {
     else{
       const values=[id];
       const query = `SELECT * FROM products WHERE id=$1`;
-      return await dbquery (query, values)
+      
+      const data =await dbquery (query, values)
+      return data[0]
       }
     }
   catch(error){
@@ -48,7 +50,8 @@ export async function getProject(id: number | "all") {
     else {
       const values = [id];
       const query = `SELECT * FROM projects WHERE id=$1`;
-      return dbquery(query, values);
+      const projectData:string[] =await dbquery(query, values);
+      return projectData[0]
     }
   } catch (err) 
     { console.log("getProject api Error")

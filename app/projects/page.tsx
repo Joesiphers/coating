@@ -1,38 +1,52 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getProject } from "@/api/nextjsApi";
-import { parseProducts } from "@/utils/utils";
-import { Product } from "@/types";
+import { getAllProjects_gql } from "@/api/wpApi";
+import { Project,ProjectGQL } from "@/types";
+import { Metadata } from "next";
+
+export const metadata:Metadata={
+  title:'Coating Projects'
+}
 
 
 export default async function Projects() {
-  let projects = await getProject("all");
-  projects = parseProducts(projects);
-  console.log(projects, "project page received");
+  let projects:Project[] =[]
+  // projects = await getProject("all");
+ // projects = parseProducts(projects);
+ try {
+   projects = await getAllProjects_gql()
+  } catch (err){
+    throw new Error (`error getting projects: ${err}`)
+  }
+ 
+ console.log(projects, "project page received");
 
   return (<>
       <div>
         <p className="text-4xl m-4">20 Years with Ceramic Epoxy Coting</p>
       </div>
-      <div className="text-xl md:grid gap-8 md:grid-cols-2 m-4 ">
-        {projects.map((item:Product, index:any) => {
+      <div className="text-xl md:grid  md:grid-cols-2 md:justify-items-center  ">
+        
+        {projects.map((item:Project, index:any) => {
           return (
             <div 
-            className="p-4 mx-auto my-8 md:mx-2 shadow-xl border-solid border-2 border-slate-300 rounded-md w-3/5 md:w-full h-64 overflow-hidden
-              transition-colors hover:border-gray-400 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
+            className="p-4 mx-auto my-8 md:mx-8 shadow-xl border-solid border-2 border-slate-300 rounded-md w-3/5 md:w-3/4 h-64 overflow-hidden
+              transition-colors hover:border-gray-400 hover:bg-gray-200 hover:dark:border-sky-900 hover:dark:bg-neutral-900 hover:dark:bg-opacity-10"
             key={index}  >
+              <div className="h-52 overflow-hidden"> 
               <Link
                 href={{
-                  pathname: `/projects/projectDetails`,
+                  pathname: `/projects/${item.title}`,
                   query: { id: item.id },
                 }}
                 scroll={true}
               >
-                <div className={`mb-3 text-xl md:text-2xl font-semibold h-16 `}>
-                  <p className=" h-12 m-2">{item.title}</p>
-                  <p className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                    -&gt;
-                  </p>
+              
+                <div className={`mb-3 text-xl md:text-2xl font-semibold`}>
+                  <p className=" h-12 m-2">{item.title} -&gt;</p>
+                   
+                  <p>{item.subtitle} </p>
                 </div>
                 <div className="relative inline justify-center">
                 <Image
@@ -45,8 +59,16 @@ export default async function Projects() {
                 </div>
               <p className={`m-0  text-sm overflow-hidden  opacity-50`}>
                 {item.description}
-              </p>              </Link>
-
+              </p>             
+              </Link>
+              </div>
+              <Link
+                href={{
+                  pathname: `/projects/projectDetails`,
+                  query: { id: item.id },
+                }}
+                scroll={true}
+              ></Link>
             </div>
           );
         })}

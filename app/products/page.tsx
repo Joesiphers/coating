@@ -1,20 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getProduct,getProductSummary } from "api/nextjsApi";
-import { parseProducts, wpProductGQLToObj } from "utils/utils";
 import { parse_title_to_url } from "utils/utils";
 import { Product } from "../../types";
 import { getAllProducts_gql } from "@/api/wpApi";
+import type { Metadata } from "next";
+
+export const metadata:Metadata ={
+  title:'Nex Products'
+}
 
 export default async function Products() {
   let productsArray = null;
   let products:Product[]=[];
 
   try {  
-    const wp_products= await getAllProducts_gql ();
-    productsArray=wp_products.nodes;
-  console.log("ProductPage wp products", wp_products.nodes)
-    products=  wpProductGQLToObj(productsArray)
+     products= await getAllProducts_gql ();
+  console.log("ProductPage wp products", products)
+ 
   }catch(err){
     console.error(err)
     throw new Error ("fetching WP_Products error")
@@ -37,7 +40,7 @@ export default async function Products() {
 
 //  }
   */
-console.log("Products Page products :", products)
+//console.log("Products Page products :", products)
 
   return (
     <div className="w-5/6 m-auto ">
@@ -69,23 +72,23 @@ console.log("Products Page products :", products)
             <Link
               href={{
                 pathname: `./products/${parse_title_to_url(product.title)}`,
-                query: { id: product.id },
+                query: { id: product.id,title:product.title },
               }}
               scroll={true}
             >
               <div className=" h-12 m-2">{product.title}</div>
               <div className=" h-20 block align-middle ">
-                <Image
+               {product.imgurl[0] &&<Image
                   src={`${product.imgurl[0]}`}
                   alt=""
                   width={50}
                   height={50}
                   className="m-auto"
-                />
+                />} 
               </div>
               <p>{product.subtitle}</p>
             </Link>
-            <Link href={`products/detals?id=${product.id}`}>
+            <Link href={`products/detail?id=${product.id}`}>
               <br />
               <p>try dynmic route</p>
               <p>link to {` toto ${product.id}`} </p>

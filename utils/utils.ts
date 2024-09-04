@@ -1,8 +1,8 @@
-import { ProductGQL,Product } from "@/types";
+import { ProductGQL,Product,Project,ProjectGQL } from "@/types";
 
 /**manage the products array of object from db TO array [] */
 export const parseProducts = (productsArray) => {
-  console.log("productARR", productsArray, typeof productsArray);
+  //console.log("productARR", productsArray, typeof productsArray);
   // productsArray type of Object
   let updateData = [];
   for (let i of productsArray) {
@@ -30,31 +30,67 @@ export const wpProductGQLToObj = (productGQL:ProductGQL[] )=>{
         description:'',
         features:'',
         projectApplication:'',
+        technical:''
       };
-      productObj.id=i.databaseId;      
-      productObj.title=i.title;    
+      for (let j in i){
+        if (j!= 'podimages')
+        {productObj[j]=i[j]}
+      }
+
+      productObj.id=i.databaseId; 
       let imgurl:string[]=[];
-        console.log("2,progql",productObj,i.podimages.nodes);
+     //   console.log("2,progql",productObj,i.podimages.nodes);
 
       i.podimages.nodes.forEach(y=>
-        { console.log(y,imgurl)
+        { //console.log(y,imgurl)
           imgurl.push( y.guid)
           }
         )
         productObj.imgurl=imgurl;
-      for (let j in i.coating){
-          productObj[j]=i.coating[j]
-        }
-        console.log("uctObj", productObj)
+      //  //console.log("productObj", productObj)
         productArray.push(productObj)
-
   })
-  /*for (let i of productGQL){
-      const imgArray=i.podimages.nodes
-      for (let y of imgArray){
 
-      }
-
-  }*/
   return productArray
 }
+
+const wpProjectGQLToObj = (projectGQL:ProjectGQL[] )=>{
+  let projectsArray:Project[] =[]  
+    projectGQL.forEach(i=>{
+      let projectObj:Project={
+        id:0,
+        title: "",
+        subtitle:'',
+        imgurl:[''],
+        description:'',
+        features:[],
+        productsUsed:[],
+      };
+      for (let j in i){
+        let imgurl:string[]=[];
+        switch(j) {
+        case 'features':{projectObj.features=i.features?.split(';')}
+        case 'podimages' : i.podimages.nodes.forEach(y=>
+          { //console.log(y,imgurl)
+            imgurl.push( y.guid)
+            }
+          )
+        case 'productsUsed'  :projectObj.productsUsed=i.productsUsed?.split(';')
+          break;
+        default: projectObj[j]=i[j]
+      }
+      projectObj.id=i.databaseId
+      projectObj.imgurl=imgurl;
+    }
+      //projectObj.id=i.databaseId; 
+     //   console.log("2,progql",projectObj,i.podimages.nodes);
+
+      
+
+      //  //console.log("projectObj", projectObj)
+        projectsArray.push(projectObj)
+
+  })
+  return projectsArray}
+
+  export  {wpProjectGQLToObj}
