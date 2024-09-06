@@ -79,9 +79,10 @@ export async function getProduct_gql (param:number|string){
                     }
                 } }`
     const variables= typeof param ==='number'? {"id":param,"title":''}:{'id':0, "title":param}
-    console.log(param ,typeof param, variables)
+    //console.log(param ,typeof param, variables)
+    
     const data=await fetchGql (query, variables)
-    console.log("data",data)
+    //console.log("data",data.products.edges)
     let productGQLArray=[];
      data?.products.edges.forEach (i=>{
         productGQLArray.push(i.node)
@@ -141,7 +142,7 @@ export async function getAllProjects_gql (){
     return projects;
 }
 
-/**get single project GQL */
+/**get single project GQL BY id */
 export async function getProject_gql (id:number ){
     const query =`query project ($id:Int!) { 
                     projects( where: {id: $id}) {

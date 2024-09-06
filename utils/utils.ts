@@ -28,29 +28,44 @@ export const wpProductGQLToObj = (productGQL:ProductGQL[] )=>{
         subtitle:'',
         imgurl:[''],
         description:'',
-        features:'',
-        projectApplication:'',
-        technical:''
+        features:[],
+        projectApplication:[],
+        productDesigned:[],
+        certificates:[]
       };
-      for (let j in i){
-        if (j!= 'podimages')
-        {productObj[j]=i[j]}
-      }
-
-      productObj.id=i.databaseId; 
       let imgurl:string[]=[];
-     //   console.log("2,progql",productObj,i.podimages.nodes);
-
-      i.podimages.nodes.forEach(y=>
-        { //console.log(y,imgurl)
-          imgurl.push( y.guid)
+      for (let j in i){
+        if (j=='title'|j=='subtitle'|j=='description')
+        {productObj[j]=i[j]
+        }
+        else if (j=='podimages')
+          {i.podimages.nodes.forEach(y=>
+            { //console.log(y,imgurl)
+              imgurl.push( y.guid)
+              } )
+            productObj.imgurl=imgurl;
           }
-        )
-        productObj.imgurl=imgurl;
+        else if (j=='databaseId'){
+                productObj.id=i.databaseId;
+  
+        }else if (j=='features'){
+          productObj.features=i.features?.split(';').map(item=>item.split(':')) 
+          //to [ [a,b],[c,d]  ]
+        }
+          else {
+            productObj[j]=i[j].split(';')
+
+          }
+        /*
+        productObj.features=i.features?.split(';')
+        productObj.productDesigned=i.productDesigned.split(';')
+        productObj.certificates=i.certificates.split(';')
+        productObj.projectApplication=i.projectapplication?.split(';')
+        */
+      }
       //  //console.log("productObj", productObj)
         productArray.push(productObj)
   })
-
   return productArray
 }
 
