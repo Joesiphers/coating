@@ -2,7 +2,6 @@ import { ProductGQL,Product,Project,ProjectGQL } from "@/types";
 
 /**manage the products array of object from db TO array [] */
 export const parseProducts = (productsArray) => {
-  //console.log("productARR", productsArray, typeof productsArray);
   // productsArray type of Object
   let updateData = [];
   for (let i of productsArray) {
@@ -20,35 +19,31 @@ export const parse_title_to_url = (title: string) => {
 
 export const wpProductGQLToObj = (productGQL:ProductGQL[] )=>{
   let productArray:Product[] =[]  
-  
     productGQL.forEach(i=>{
       let productObj:Product={
-        id:0,
+        productId:0,
         title: "",
         subtitle:'',
         imgurl:[''],
         description:'',
         features:[],
-        projectApplication:[],
+        productApplication:[],
         productDesigned:[],
         certificates:[]
       };
       let imgurl:string[]=[];
       for (let j in i){
-        if (j=='title'|j=='subtitle'|j=='description')
+        if (j=='title'|j=='subtitle'|j=='description'|j=='cursor'|j=='productId')
         {productObj[j]=i[j]
         }
         else if (j=='podimages')
           {i.podimages.nodes.forEach(y=>
-            { //console.log(y,imgurl)
+            { 
               imgurl.push( y.guid)
               } )
             productObj.imgurl=imgurl;
           }
-        else if (j=='databaseId'){
-                productObj.id=i.databaseId;
-  
-        }else if (j=='features'){
+        else if (j=='features'){
           productObj.features=i.features?.split(';').map(item=>item.split(':')) 
           //to [ [a,b],[c,d]  ]
         }
@@ -63,7 +58,6 @@ export const wpProductGQLToObj = (productGQL:ProductGQL[] )=>{
         productObj.projectApplication=i.projectapplication?.split(';')
         */
       }
-      //  //console.log("productObj", productObj)
         productArray.push(productObj)
   })
   return productArray
@@ -84,12 +78,15 @@ const wpProjectGQLToObj = (projectGQL:ProjectGQL[] )=>{
       for (let j in i){
         let imgurl:string[]=[];
         switch(j) {
-        case 'features':{projectObj.features=i.features?.split(';')}
+        case 'features':
+          projectObj.features=i.features?.split(';');
+          break;
         case 'podimages' : i.podimages.nodes.forEach(y=>
-          { //console.log(y,imgurl)
+          { 
             imgurl.push( y.guid)
             }
-          )
+          );
+            break;
         case 'productsUsed'  :projectObj.productsUsed=i.productsUsed?.split(';')
           break;
         default: projectObj[j]=i[j]
@@ -98,11 +95,6 @@ const wpProjectGQLToObj = (projectGQL:ProjectGQL[] )=>{
       projectObj.imgurl=imgurl;
     }
       //projectObj.id=i.databaseId; 
-     //   console.log("2,progql",projectObj,i.podimages.nodes);
-
-      
-
-      //  //console.log("projectObj", projectObj)
         projectsArray.push(projectObj)
 
   })

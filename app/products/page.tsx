@@ -1,46 +1,50 @@
 import Image from "next/image";
 import Link from "next/link";
+import  Pagination from "../../components/Pagination";
 import { getProduct,getProductSummary } from "api/nextjsApi";
 import { parse_title_to_url } from "utils/utils";
 import { Product } from "../../types";
-import { getAllProducts_gql } from "@/api/wpApi";
+import { getAllProducts_gql, loadMoreProductsPaginated_gql } from "@/api/wpApi";
 import type { Metadata } from "next";
+import LoadMore from "@/components/LoadMore";
 
 export const metadata:Metadata ={
   title:'Nex Products'
 }
 
 export default async function Products() {
-  let productsArray = null;
   let products:Product[]=[];
-
+  let pageInfo={}
   try {  
+      [products,pageInfo]= await loadMoreProductsPaginated_gql (null);
+   console.log("ProductPage wp products", products,pageInfo)
+  
+   }catch(err){
+     console.error(err)
+     throw new Error ("fetching WP_Products error")
+   }
+
+  /*try {  
      products= await getAllProducts_gql ();
-  console.log("ProductPage wp products", products)
- 
   }catch(err){
     console.error(err)
     throw new Error ("fetching WP_Products error")
-  }
+  }*/
+
 /* use nextjs direct query DB 
-  try {
+   let productsArray = null;
+try {
     productsArray = await getProductSummary("all");
-    //productsArray = await getProduct("all");
-    //console.log("Array", productsArray);
   } catch (err) {
-    console.log("no products Array received", err);
     const message = err instanceof Error ? err.message : "unknown Error";
         //throw err; //goes to error.js will pop up a error on web. not good
       //call the modal
     //  return (      <Modal info={message} />      );
       if (productsArray) {
-        console.log("Products Page products :1 ", products)
         products = parseProducts(productsArray);
       }
-
 //  }
   */
-//console.log("Products Page products :", products)
 
   return (
     <div className="w-5/6 m-auto ">
@@ -61,7 +65,7 @@ export default async function Products() {
       <div className="text-sky-600">
         Utilise Precision equitment for corrosion proof coating
       </div>
-      <div className=" justify-between my-12 md:grid md:grid-cols-4 md:gap-6">
+      <div className=" justify-between my-12 md:grid md:grid-cols-2 md:gap-6">
         {products.map((product, index) => (
           <div
             className="p-4 mx-auto my-8 md:mx-2 shadow-xl border-solid border-2 border-slate-300 rounded-md w-3/5 md:w-full h-64 overflow-hidden
@@ -72,7 +76,7 @@ export default async function Products() {
             <Link
               href={{
                 pathname: `./products/${parse_title_to_url(product.title)}`,
-                query: { id: product.id,title:product.title },
+                query: { id: product.productId,title:product.title },
               }}
               scroll={true}
             >
@@ -88,14 +92,16 @@ export default async function Products() {
               </div>
               <p>{product.subtitle}</p>
             </Link>
-            <Link href={`products/detail?id=${product.id}`}>
+            <Link href={`products/detail?id=${product.productId}`}>
               <br />
               <p>try dynmic route</p>
-              <p>link to {` toto ${product.id}`} </p>
+              <p>link to {` toto ${product.productId}`} </p>
             </Link>
           </div>
         ))}
       </div>
+        <LoadMore cursor={pageInfo.endCursor} />
+      <Pagination  />
     </div>
   );
 }

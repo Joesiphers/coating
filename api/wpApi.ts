@@ -1,4 +1,6 @@
 import { wpProductGQLToObj,wpProjectGQLToObj } from "@/utils/utils";
+import { useSearchParams } from "next/navigation";
+
 
 
 /**api for using Wordpress as backend */
@@ -6,9 +8,13 @@ import { wpProductGQLToObj,wpProjectGQLToObj } from "@/utils/utils";
 const resturl=process.env.WP_REST_BASE_URL
 const GQL_URL="http://34.82.14.85/wordpress/graphql" //process.env.WP_GQL_BASE_URL
 
-export async function getProducts (query?:string,){  
-              
-   const res=await fetch (`${GQL_URL}?query=`+query ).then(res=>res.json())
+export async function getProductsWPRestAPI (query?:string,){  
+    //const searchParams=useSearchParams()
+    //const params=new URLSearchParams(searchParams)
+  //  params.set('id',query)
+    const res=await fetch (`${resturl}?${query}` ).then(res=>res.json())
+
+//   const res=await fetch (`${resturl}?query=${query}` ).then(res=>res.json())
    return res
 }
 export async function getProductsRestAPI (query?:string){
@@ -36,7 +42,7 @@ export async function getAllProducts_gql (){
     const query =` { products  {
                         nodes {
                             title
-                            databaseId
+                            productId
                             subtitle
                             podimages {
                                 nodes {
@@ -56,14 +62,15 @@ export async function getAllProducts_gql (){
 /**fetch a product data with id:number or title:string 
  * return all the data of this product
 */
-export async function getProduct_gql (param:number|string){
+export async function getProduct_gql (param:number|string ){
 
     const query =`query product ($id:Int!,$title:String) { 
                     products( where: { id: $id, title:$title}) {
                     edges{
+                        cursor
                         node {
                             title
-                            databaseId
+                            productId
                             description
                             features
                             subtitle
@@ -82,17 +89,18 @@ export async function getProduct_gql (param:number|string){
     //console.log(param ,typeof param, variables)
     
     const data=await fetchGql (query, variables)
-    //console.log("data",data.products.edges)
+    
     let productGQLArray=[];
-     data?.products.edges.forEach (i=>{
-        productGQLArray.push(i.node)
+    data?.products.edges.forEach (i=>{
+        productGQLArray.push({...i.node,cursor:i.cursor})
      }) ;
     // console.log("wpAPI getProductGql array", productGQLArray, )
      const product=wpProductGQLToObj(productGQLArray)
     return product[0];
 }
+
 /**fetch a prodcuts list (array)
- * return title and databaseId only
+ * return title and productId only
 */
 export async function getProductIdByTitle_gql (title:string[]){
     const query =`query product ($title:String) { 
@@ -100,7 +108,7 @@ export async function getProductIdByTitle_gql (title:string[]){
                     edges{
                         node {
                             title
-                            databaseId
+                            productId
                         }
                     }
                 } }`
@@ -111,9 +119,8 @@ export async function getProductIdByTitle_gql (title:string[]){
             const variables={'title':i}
             const result = await fetchGql (query, variables)
 //            console.log ('i in ',title, i,'result :',result.products.edges)
-            data.push({title:i, id:result.products.edges[0] .node.databaseId})
+            data.push({title:i, id:result.products.edges[0] .node.productId})
         }
-            console.log("GetIdbyTitleGQL data",data)
             return data
         }
 }
@@ -126,7 +133,7 @@ export async function getAllProjects_gql (){
     const query =` { projects  {
                         nodes {
                             title
-                            databaseId
+                            projectId
                             subtitle
                             podimages {
                                 nodes {
@@ -136,7 +143,6 @@ export async function getAllProjects_gql (){
                         }
                 } }`
     const data=await fetchGql (query)
-    console.log("wpAPI getAllProjetctGql array", data.projects.nodes, )
     const projects=  wpProjectGQLToObj(data.projects.nodes)
     
     return projects;
@@ -149,7 +155,7 @@ export async function getProject_gql (id:number ){
                     edges{
                         node {
                             title
-                            databaseId
+                            projectId
                             description
                             features
                             subtitle
@@ -171,4 +177,89 @@ export async function getProject_gql (id:number ){
     // console.log("wpAPI gerprojectGql array", projectGQLArray, )
      const project=wpProjectGQLToObj(projectGQLArray)
     return project[0];
+}
+
+export async function loadMoreProductsPaginated_gql (cursor:string|null =null ){
+    const query = ` query getPagedProducts($first: Int!, $cursor: String) {
+    products(first: $first, after: $cursor) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        cursor
+      }
+      nodes {
+          productId
+          title
+          subtitle
+          podimages {
+            nodes {
+            guid
+            }
+          }
+      }
+      
+    }
+  }
+`;
+    const BATCH_SIZE = 2;
+    const variables={first:BATCH_SIZE, cursor:cursor}
+    console.log('loadmore gql',query, variables)
+    let data= await fetchGql (query,variables )
+  // data = data.products.edges.map(node=>node.node)
+    //const products=  wpProductGQLToObj(data.products.edges)
+    
+    const products=  wpProductGQLToObj(data.products.nodes)
+    const pageInfo= data.products.pageInfo
+    return [products,pageInfo]
+}
+
+export async function getPreNextProduct_gql (
+    cursor:string, batch:number=1, ){
+    type Direction = 'before'|'after' 
+    let dir=''
+    const generateQuery = (direction :Direction)=>{
+        
+        switch (direction){
+            case 'before' : dir='last';
+                break;
+            case 'after':   dir='first';
+                break;
+            default: return null
+        }
+        return ` query getNextProducts($batch: Int!, $${direction}: String) {
+            products(${dir}: $batch, ${direction}: $${direction}) {
+            pageInfo {
+                hasPreviousPage
+                hasNextPage
+                startCursor
+                endCursor
+            }
+            nodes {
+                productId
+                title
+                }
+            }
+        }
+        `;}
+    const genterateVariables=(direction:Direction)=>{return {batch:batch, [direction]:cursor}}
+    
+    const getPrevNextdata= async ( direction:Direction)=> {
+        const query=generateQuery (direction)
+        const variables=genterateVariables(direction)
+        const data=await fetchGql (query ,variables )
+        const product=  data.products.nodes
+//        const product=  wpProductGQLToObj(data.products.nodes)
+
+        const pageInfo= data.products.pageInfo
+
+       // const productId=product[0].productId
+    //    console.log("pageInfo PrevNextproducts", data.products.pageInfo,product)
+        //return {hasNextPage,hasPreviousPage,startCursor, endCursor}
+        return {pageInfo,product}
+    }
+    const prev =await getPrevNextdata('before')
+    const next =await getPrevNextdata('after')
+    return {prev:prev.product[0], next:next.product[0]}
 }
