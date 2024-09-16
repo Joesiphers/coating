@@ -65,7 +65,7 @@ export default async function Projects() {
               <Link
                 href={{
                   pathname: `/projects/projectDetails`,
-                  query: { id: item.id },
+                  query: { id: item.projectId },
                 }}
                 scroll={true}
               ></Link>

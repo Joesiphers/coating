@@ -152,8 +152,7 @@ export async function getAllProjects_gql (){
 export async function getProject_gql (id:number ){
     const query =`query project ($id:Int!) { 
                     projects( where: {id: $id}) {
-                    edges{
-                        node {
+                        nodes {
                             title
                             projectId
                             description
@@ -167,14 +166,12 @@ export async function getProject_gql (id:number ){
                             }
                         }
                     }
-                } }`
+                }`
         const variables={"id":id}
     const data=await fetchGql (query, variables)
-    let projectGQLArray=[];
-     data?.projects.edges.forEach (i=>{
-        projectGQLArray.push(i.node)
-     }) ;
-    // console.log("wpAPI gerprojectGql array", projectGQLArray, )
+    console.log("id",id, data?.projects.nodes)
+    let projectGQLArray= data?.projects.nodes;
+    console.log("wpAPI gerprojectGql array", projectGQLArray, )
      const project=wpProjectGQLToObj(projectGQLArray)
     return project[0];
 }

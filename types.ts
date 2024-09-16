@@ -40,7 +40,7 @@ export type Project ={
 }
 export type ProjectGQL ={
     title:string;
-    databaseId:number;
+    projectId:number;
         subtitle:string;
         description:string;
         features?:string;
@@ -54,3 +54,4 @@ export type ProjectGQL ={
         }[]
     }
 }
+export type Cursor={hasMorePage:Boolean,endCursor:string}
