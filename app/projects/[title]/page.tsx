@@ -42,7 +42,7 @@ const productsInvoledTitleAndId =await getProductIdByTitle_gql(productsUsed)
         <div className=" flex justify-center p-4">
       <div className="block md:grid md:grid-cols-2  ">
         {imgurl&&imgurl.map((url) => (
-          <div className="m-4">
+          <div className="m-4" key={url}>
             <Image
             key={url}
             src={url}
@@ -66,9 +66,11 @@ const productsInvoledTitleAndId =await getProductIdByTitle_gql(productsUsed)
         {productsInvoledTitleAndId[0]&&productsInvoledTitleAndId.map(i=>{
             
             return <Link href={{
-                pathname:`/products/${i.title}`,
-                query:{id:i.id}
-            }}>
+                      pathname:`/products/${i.title}`,
+                      query:{id:i.id}
+                              }}
+                      key={i.id}
+            >
                 <li>{i.title} {i.id} </li>
             </Link>})
           }

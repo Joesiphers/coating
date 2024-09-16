@@ -1,5 +1,5 @@
 export type Product ={
-    id:number
+    productId:number
     title:string;
     subtitle:string;
     imgurl:string[];
@@ -12,7 +12,7 @@ export type Product ={
 
 export type ProductGQL ={
     title:string;
-    databaseId:number;
+    productId:number;
         subtitle:string;
         description:string;
         features?:string;
@@ -29,7 +29,7 @@ export type ProductGQL ={
 }
 
 export type Project ={
-    id:number
+    projectId:number
     title:string;
     subtitle:string;
     description:string;
@@ -40,7 +40,7 @@ export type Project ={
 }
 export type ProjectGQL ={
     title:string;
-    databaseId:number;
+    projectId:number;
         subtitle:string;
         description:string;
         features?:string;
@@ -54,3 +54,4 @@ export type ProjectGQL ={
         }[]
     }
 }
+export type Cursor={hasMorePage:Boolean,endCursor:string}
