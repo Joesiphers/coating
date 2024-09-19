@@ -3,7 +3,7 @@ import Link from "next/link";
 import  Pagination from "../../components/Pagination";
 import { getProduct,getProductSummary } from "api/nextjsApi";
 import { parse_title_to_url } from "utils/utils";
-import { Product } from "../../types";
+import { Cursor, Product } from "../../types";
 import { getAllProducts_gql, loadMoreProductsPaginated_gql } from "@/api/wpApi";
 import type { Metadata } from "next";
 import LoadMore from "@/components/LoadMore";
@@ -14,10 +14,10 @@ export const metadata:Metadata ={
 
 export default async function Products() {
   let products:Product[]=[];
-  let pageInfo={}
+  let pageInfo:Cursor;
   try {  
       [products,pageInfo]= await loadMoreProductsPaginated_gql (null);
-   console.log("ProductPage wp products", products,pageInfo)
+  // console.log("ProductPage wp products", products,pageInfo)
   
    }catch(err){
      console.error(err)

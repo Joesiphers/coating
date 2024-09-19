@@ -71,6 +71,7 @@ export async function getProduct_gql (param:number|string ){
                         node {
                             title
                             productId
+                            content
                             description
                             features
                             subtitle
@@ -94,8 +95,10 @@ export async function getProduct_gql (param:number|string ){
     data?.products.edges.forEach (i=>{
         productGQLArray.push({...i.node,cursor:i.cursor})
      }) ;
+    const products = data?.products.edges.map(i=>({ ...i.node,cursor:i.cursor }))
+    
     // console.log("wpAPI getProductGql array", productGQLArray, )
-     const product=wpProductGQLToObj(productGQLArray)
+     const product=wpProductGQLToObj(products)
     return product[0];
 }
 
@@ -155,6 +158,7 @@ export async function getProject_gql (id:number ){
                         nodes {
                             title
                             projectId
+                            content
                             description
                             features
                             subtitle
@@ -169,9 +173,8 @@ export async function getProject_gql (id:number ){
                 }`
         const variables={"id":id}
     const data=await fetchGql (query, variables)
-    console.log("id",id, data?.projects.nodes)
     let projectGQLArray= data?.projects.nodes;
-    console.log("wpAPI gerprojectGql array", projectGQLArray, )
+    //console.log("wpAPI gerprojectGql array", projectGQLArray, )
      const project=wpProjectGQLToObj(projectGQLArray)
     return project[0];
 }
@@ -182,10 +185,10 @@ export async function loadMoreProductsPaginated_gql (cursor:string|null =null ){
       pageInfo {
         hasNextPage
         endCursor
-      }
+        }
       edges {
         cursor
-      }
+        }
       nodes {
           productId
           title
@@ -200,9 +203,9 @@ export async function loadMoreProductsPaginated_gql (cursor:string|null =null ){
     }
   }
 `;
-    const BATCH_SIZE = 2;
+    const BATCH_SIZE = 4;
     const variables={first:BATCH_SIZE, cursor:cursor}
-    console.log('loadmore gql',query, variables)
+    //console.log('loadmore gql',query, variables)
     let data= await fetchGql (query,variables )
   // data = data.products.edges.map(node=>node.node)
     //const products=  wpProductGQLToObj(data.products.edges)

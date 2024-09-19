@@ -13,7 +13,7 @@ export async function generateMetadata ({searchParams}:{searchParams: {id:string
 export default async function Page({ searchParams,params }: { params: { title: string },searchParams: { id: string,title:string} }
   ) {
   const { id } = searchParams;
-  let product;
+  let product:Product;
     try {
       //product=await getProduct(parseInt(id)); // with nextjs backend DB  access
       //product.imgurl=JSON.parse(product.imgurl)
@@ -27,10 +27,11 @@ export default async function Page({ searchParams,params }: { params: { title: s
       return <Modal info={"err"}> getProduct Error</Modal>;
     }
     const {cursor}=product
+    const str =product.content.replace(/\n /,'')
 
 return(  <>
     <div className="text-4xl p-4">{product.title} </div>
-    <div className="text-2xl relative left-1/4 text-left" > {product.subtitle} </div>
+    <div className="text-xl text-blue-800 w-3/5 m-auto" > {product.subtitle} </div>
 
     <div className=" flex justify-center p-4">
       <div className="block md:grid md:grid-cols-2  ">
@@ -49,11 +50,13 @@ return(  <>
         ))}
       </div>  
     </div>
-    <div className="text-xl p-4 w-5/6 m-auto whitespace-pre-line text-left ">
-      {product.description}
+    <div className="text-xl p-4 w-5/6 m-auto text-left ">
+     <div dangerouslySetInnerHTML={{__html: str}} className="reset-tw indent-8"></div>
+
     </div>
     <div><ProductPanel product={product}/> </div>
     <div>{"project application cases"}</div>
     <PrevNext cursor={cursor} />
+
   </>
 )};

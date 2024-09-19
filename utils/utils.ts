@@ -21,13 +21,17 @@ export const parse_title_to_url = (title: string) => {
  const wpProductGQLToObj= (productGQL:ProductGQL[])=>{
   const productsObj = productGQL.map((i: ProductGQL )=>{
     const product ={
-      productId:i.productId,
-      title:i.title,
-      subtitle:i.subtitle,
-      description:i.description,
-      features:i.features?.split(';')||[],
-      certificates:i.certificates.split(';'),
-      productDesigned:i.productDesigned.split(';')||[],
+      productId:i.productId ||0,
+      cursor:i.cursor||"",
+      title:i.title||"",
+      subtitle:i.subtitle||"",
+      content:i.content||"",
+      description:i.description||"",
+      features:i.features?.split(';').map(
+        item=> item?item.split(':').map(i=>i?i.split(','):null ):null
+         )||[[[]]],
+      certificates:i.certificates?.split(';')||[],
+      productDesigned:i.productDesigned?.split(';')||[],
       productApplication:i.productApplication?.split(';')||[],    
       imgurl:i.podimages.nodes.map(node=>node.guid)
     } 
@@ -41,8 +45,10 @@ export const parse_title_to_url = (title: string) => {
       console.log(project,"wpProjectGQLtoOBJ")
       const projectObj :Project={
         projectId:project.projectId||0,
+        cursor:project.cursor||"",
         title:project.title||'',
         subtitle:project.subtitle||'',
+        content:project.content||"",
         description:project.description||'',
         features:project.features?.split(';')||[],
         productsUsed:project.productsUsed?.split(';')||[],

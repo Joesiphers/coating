@@ -6,7 +6,7 @@ import {getPreNextProduct_gql} from '@/api/wpApi'
 export default async function Page ({cursor}:{cursor:string} ){
         const{prev, next}= await getPreNextProduct_gql(cursor)
 
-    return (<div className="flex justify-between w-4/5 m-auto">
+    return (<div className="flex justify-between py-2 w-4/5 m-auto">
         {prev?  <Link href={{
             pathname:`/products/${prev.title}`,
             query:{id:prev.productId}

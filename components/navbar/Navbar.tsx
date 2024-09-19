@@ -19,7 +19,7 @@ export default function Navbar() {
   return (
     <>
       <div className="md:hidden text-right">{<MobiMenu />}</div>
-      <div className="hidden md:flex  px-0.5  relative justify-end">
+      <div className="hidden md:flex  px-0.5  relative left-8">
         {bar}
       </div>
     </>

@@ -5,14 +5,14 @@ import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { parse_title_to_url } from "utils/utils";
-import { Product,Cursor } from "@/types"
+import { Product} from "@/types"
 
 
-export default function LoadMore(cursor:Cursor){
+export default function LoadMore({cursor}:{cursor:string}){
     console.log('Load More init cursors',cursor)
     const [moreProducts, setMoreProducts]=useState<Product[]|[]> ([] )
     const [hasMorePage,setHasMorePage]=useState(true)
-    const [startCursor, setStartCursor]=useState(cursor.endCursor)
+    const [startCursor, setStartCursor]=useState(cursor)
     const loadmore=async ()=>{
         const [products,nextcursors] =await loadMoreProductsPaginated_gql(startCursor)
         console.log('22cursors',startCursor,products,moreProducts)

@@ -23,7 +23,7 @@ try {
 /*if (project.productsUsed.length>0){
    const productId= project.productsUsed.foreach (await getProductIdByTitle_gql(i))
   }*/
-const { title, subtitle,features,description, imgurl,productsUsed}=project
+const { title, subtitle,content,features,description, imgurl,productsUsed}=project
 
 const productsInvoledTitleAndId =await getProductIdByTitle_gql(productsUsed)
 
