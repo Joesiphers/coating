@@ -15,9 +15,10 @@ export default async function Page({ searchParams,params }: { params: { title: s
   const { id } = searchParams;
   let product:Product;
     try {
-      //product=await getProduct(parseInt(id)); // with nextjs backend DB  access
-      //product.imgurl=JSON.parse(product.imgurl)
-      product=await getProduct_gql (parseInt(id))  //with wrodpress GQL access
+      product=await getProduct(parseInt(id)); // with nextjs backend DB  access
+      product.imgurl=JSON.parse(product.imgurl)
+     // product=await getProduct_gql (parseInt(id))
+      console.log("product", product);  //with wrodpress GQL access
       if (!product){
         throw new Error ("fetch product error, return no product")
       }
@@ -27,7 +28,7 @@ export default async function Page({ searchParams,params }: { params: { title: s
       return <Modal info={"err"}> getProduct Error</Modal>;
     }
     const {cursor}=product
-    const str =product.content.replace(/\n /,'')
+    const str =product.content?product.content.replace(/\n /,''):""
 
 return(  <>
     <div className="text-4xl p-4">{product.title} </div>

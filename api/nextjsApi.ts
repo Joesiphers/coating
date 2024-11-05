@@ -2,15 +2,15 @@
 
 import { dbquery } from "utils/db"; /*import from absolute path need to edit jsconfig.json*/
 
-export async function getProduct(id: number | "all") {
-  console.log("api/nextjsApi getProducts with" , id)
+export async function getProduct(product_id: number | "all") {
+  console.log("api/nextjsApi getProducts with" , product_id)
   try{
-    if (id=="all"){
+    if (product_id=="all"){
       return await dbquery(`SELECT * FROM products`)
     }
     else{
-      const values=[id];
-      const query = `SELECT * FROM products WHERE id=$1`;
+      const values=[product_id];
+      const query = `SELECT * FROM products WHERE product_id=$1`;
       
       const data =await dbquery (query, values)
       return data[0]
@@ -22,14 +22,14 @@ export async function getProduct(id: number | "all") {
   }
 }
 
-export async function getProductSummary(id: number | "all") {
-  //console.log("api/nextjsApi getProductsSummary with" , id)
+export async function getProductSummary(product_id: number | "all") {
+  //console.log("api/nextjsApi getProductsSummary with" , product_id)
   try{
-    if (id=="all"){
-      return await dbquery(`SELECT id, title, imgurl,subtitle FROM products`)
+    if (product_id=="all"){
+      return await dbquery(`SELECT product_id, title, imgurl,subtitle FROM products`)
     }
     else{
-      const values=[id];
+      const values=[product_id];
       const query = `SELECT * FROM products WHERE id=$1`;
       return await dbquery (query, values)
       }
@@ -40,6 +40,22 @@ export async function getProductSummary(id: number | "all") {
   }
 }
 
+export async function loadMoreProducts (cursor:number = 0 ){
+  const BATCH_SIZE=4
+  try {
+      const values = [cursor];
+      const query = `SELECT * FROM products ORDER BY product_id LIMIT ${BATCH_SIZE} OFFSET $1`;
+      return await dbquery(query, values);
+    /* else {
+      const query = `SELECT * FROM products ORDER BY product_id LIMIT ${BATCH_SIZE}`;
+      return await dbquery(query);
+    }*/
+  }catch (error) {
+    console.error("nextjsApi loadMoreProducts got error", error)
+    throw error
+  }
+
+}
 
 export async function getProject(id: number | "all") {
 

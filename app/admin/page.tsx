@@ -16,7 +16,7 @@ export default async function AdminPage() {
         <div className="  top-0 right-0 "></div>
       </div>
       <div>
-        manage/edit <Link href="admin/mg">product</Link>
+        manage/edit <Link href="admin/editProduct">product</Link>
         <Link href="admin/editproject">
           <p> project</p>
         </Link>

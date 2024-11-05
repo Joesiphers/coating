@@ -1,5 +1,5 @@
 export type Product ={
-    productId:number
+    product_id:number
     cursor:string;
     title:string;
     subtitle:string;
@@ -15,7 +15,7 @@ export type Product ={
 export type ProductGQL ={
     title:string;
     cursor?:string;
-    productId:number;
+    product_id:number;
         subtitle:string;
         content:string;
         description:string;

@@ -2,7 +2,7 @@ import { ProductGQL,Product,Project,ProjectGQL } from "@/types";
 
 
 /**manage the products array of object from db TO array [] */
-export const parseProducts = (productsArray) => {
+const parseProducts = (productsArray) => {
   // productsArray type of Object
   let updateData = [];
   for (let i of productsArray) {
@@ -13,7 +13,7 @@ export const parseProducts = (productsArray) => {
 };
 
 /*pass title to url*/
-export const parse_title_to_url = (title: string) => {
+const parse_title_to_url = (title: string) => {
   const result = title.replaceAll(" ", "-");
   return result;
 };
@@ -59,4 +59,4 @@ export const parse_title_to_url = (title: string) => {
     return data
   
   }
-   export  {wpProjectGQLToObj, wpProductGQLToObj}
+   export  {wpProjectGQLToObj, wpProductGQLToObj,parseProducts,parse_title_to_url}
