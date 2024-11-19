@@ -4,7 +4,6 @@ import  Pagination from "../../components/Pagination";
 import { getProduct,getProductSummary } from "@/api/js-get";
 import { parse_title_to_url,parseProducts } from "utils/utils";
 import { Cursor, Product } from "../../types";
-import { getAllProducts_gql, loadMoreProductsPaginated_gql } from "@/api/wp-api";
 import ProductCard from "@/components/productSumaryCard";
 import type { Metadata } from "next";
 import LoadMore from "@/components/LoadMore";
@@ -15,25 +14,11 @@ export const metadata:Metadata ={
 
 export default async function Products() {
   let products:Product[]=[];
-  let pageInfo:Cursor;
-  /*try {  
-      [products,pageInfo]= await loadMoreProductsPaginated_gql (null);
-  // console.log("ProductPage wp products", products,pageInfo)
-  
-   }catch(err){
-     console.error(err)
-     throw new Error ("fetching WP_Products error")
-   }
-*/
 
-/* use nextjs direct query DB */
    let productsArray = null;
 try {
-    productsArray = await getProductSummary("all");
-      if (productsArray) {
-        products = parseProducts(productsArray);
-        console.log("products", products);
-      }
+    products = await getProductSummary("all");
+    console.log("products", products);
   } catch (err) {
     const message = err instanceof Error ? err.message : "unknown Error";
         //throw err; //goes to error.js will pop up a error on web. not good
@@ -67,7 +52,7 @@ try {
             <Link
               href={{
                 pathname: `./products/${parse_title_to_url(product.title)}`,
-                query: { id: product.product_id,title:product.title },
+                query: { product_id: product.product_id,title:product.title },
               }}
               scroll={true}
             >
@@ -75,7 +60,7 @@ try {
             <ProductCard product={product} key={product.product_id}/>
             </Link>
 
-            <Link href={`products/detail?id=${product.product_id}`}>
+            <Link href={`products/detail?product_id=${product.product_id}`}>
               <br />
               <p>try dynmic route laal</p>
               <p>link to {` toto ${product.product_id}`} </p>

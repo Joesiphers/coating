@@ -11,7 +11,7 @@ import path from "node:path";
 }
 
 export async function POST(request:NextRequest) {
-  console.log("POST req");
+  console.log("POST products/routes.ts req");
   //const req = fileUpload.array("files");
   const formData = await request.formData();
   let recordData 
@@ -20,7 +20,7 @@ export async function POST(request:NextRequest) {
     const data =(formData.get("data")); // formData.get("data");
     data? recordData = JSON.parse(data):null
  
-  console.log(recordData, "recordData");
+  console.log("POST products/routes.ts recordData",recordData, );
    images = formData.getAll("files");
  }
   //console.log("images",typeof images, images);

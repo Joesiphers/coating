@@ -30,7 +30,7 @@ try {
     productsArray = await fetch(
       `http://localhost:3000/admin/api/products?product_id=all`, {
       method: "GET",
-      }
+      } 
    )
       */
     console.log("productsArr", productsArray); 

@@ -3,20 +3,15 @@ import {Tab, TabGroup,TabList, TabPanel, TabPanels}from '@headlessui/react'
 
 export default function ProductPanel ({product}:{product:Product})
     {
-
-    const tabContentArray =['features','productDesigned','productApplication','certificates']
-    console.log ('product festures',product.features)
+    const tabContentArray =['features','product_designed','product_application','certificates']
+    
     const tabs =['Features','Tech Designed','Application','Certificates']
     const tabContent=tabContentArray.map(i=>
             {return <TabPanel key={i} className=' w-full bg-gray-200/[0.8] py-4 h-[30rem]'>
-            {product[i]&&product[i].map(j=> 
-                j instanceof Array ? 
-                <div key={j} className="text-left py-2">
-                                <li className="text-lg " >{j[0]}</li>
-                                {j[1].map(k=> <p key={k} className="pl-8">---{k}</p> )}
-                </div>
-                    
-                : j&&<li className="text-left text-lg" key={j} > {j}</li> 
+            {product[i]&&product[i].split(";").map(j=> 
+               {
+                console.log ('productFeatures panel j',i,j);
+                return j&&<li className="text-left text-lg" key={j} > {j}</li> }
             )
             }
             </TabPanel>

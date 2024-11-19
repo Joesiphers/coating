@@ -13,9 +13,9 @@ export async function updateProduct(recordData: any) {
     Data.cursor,
     Data.content,
     Data.features,
-    JSON.stringify( Data.certificates?.split(";")),
-    JSON.stringify( Data.product_designed?.split(";")),
-    JSON.stringify( Data.product_application?.split(";")),
+    Data.certificates,
+    Data.product_designed,
+    Data.product_application,
   ];
 
   const updateQuery = `

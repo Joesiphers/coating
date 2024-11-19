@@ -5,19 +5,19 @@ import Image from "next/image";
 import { Product } from "@/types";
 import ProductPanel from "@/components/productFeatures";
 
-export async function generateMetadata ({searchParams}:{searchParams: {id:string,title:string}} ){
+export async function generateMetadata ({searchParams}:{searchParams: {product_id:string,title:string}} ){
   return {title:searchParams.title}
 }
  
-export default async function Page({ searchParams,params }: { params: { title: string },searchParams: { id: string,title:string} }
+export default async function Page({ searchParams,params }: { params: { title: string },searchParams: { product_id: string,title:string} }
   ) {
-  const { id } = searchParams;
+  const {product_id } = searchParams;
   let product:Product;
     try {
-      product=await getProduct(parseInt(id)); // with nextjs backend DB  access
+      product=await getProduct(parseInt(product_id)); // with nextjs backend DB  access
       //product.imgurl=JSON.parse(product.imgurl)
      // product=await getProduct_gql (parseInt(id))
-      console.log("product", product);  //with wrodpress GQL access
+      console.log("products/[title] ", product);  //with wrodpress GQL access
       if (!product){
         throw new Error ("fetch product error, return no product")
       }
@@ -26,8 +26,7 @@ export default async function Page({ searchParams,params }: { params: { title: s
       //console.log("catchErr products[title]",err)
       return <Modal info={"err"}> getProduct Error</Modal>;
     }
-    const {cursor}=product
-    const str =product.content?product.content.replace(/\n /,''):""
+    //const str =product.content?product.content.replace(/\n /,''):""
 
 return(  <>
     <div className="text-4xl p-4">{product.title} </div>
@@ -51,7 +50,14 @@ return(  <>
       </div>  
     </div>
     <div className="text-xl p-4 w-5/6 m-auto text-left ">
-     <div dangerouslySetInnerHTML={{__html: str}} className="reset-tw indent-8"></div>
+     <div className="reset-tw indent-8"id='product_content'> 
+      {product.content  }
+
+     </div>
+     <div className="reset-tw indent-8"id='product_description'> 
+      {product.description  }
+      
+     </div>
 
     </div>
     <div><ProductPanel product={product}/> </div>
