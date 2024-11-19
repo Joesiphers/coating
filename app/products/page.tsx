@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import  Pagination from "../../components/Pagination";
-import { getProduct,getProductSummary } from "api/nextjsApi";
+import { getProduct,getProductSummary } from "@/api/js-get";
 import { parse_title_to_url,parseProducts } from "utils/utils";
 import { Cursor, Product } from "../../types";
-import { getAllProducts_gql, loadMoreProductsPaginated_gql } from "@/api/wpApi";
+import { getAllProducts_gql, loadMoreProductsPaginated_gql } from "@/api/wp-api";
 import ProductCard from "@/components/productSumaryCard";
 import type { Metadata } from "next";
 import LoadMore from "@/components/LoadMore";

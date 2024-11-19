@@ -10,7 +10,7 @@ key={product.title}
 >
   <div className=" h-12 m-2">{product.title}</div>
   <div className=" h-20 block align-middle ">
-   {product.imgurl[0] &&<Image
+   {product.imgurl?.[0] &&<Image
       src={`${product.imgurl[0]}`}
       alt=""
       width={50}

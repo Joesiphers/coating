@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getProject } from "api/nextjsApi";
-import { getProject_gql , getProduct_gql} from "@/api/wpApi";
+import { getProject } from "@/api/js-get";
+import { getProject_gql , getProduct_gql} from "@/api/wp-api";
 import Scroll from "@/utils/scrollToTop"
 
 export default async function Page({

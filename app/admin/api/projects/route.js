@@ -1,5 +1,5 @@
-import { updateProject } from "api/updates";
-import { getProject } from "api/nextjsApi";
+import { updateProject } from "api/js-update-api";
+import { getProject } from "api/js-get-api";
 
 import fs from "fs";
 import path from "node:path";

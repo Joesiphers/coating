@@ -1,22 +1,21 @@
-import { getProduct } from "api/nextjsApi";
-import {getProduct_gql}from "api/wpApi";
+import { getProduct } from "@/api/js-get";
+//import {getProduct_gql}from "@/api/wp-api";
 import Modal from "@/components/layout/Modal";
 import Image from "next/image";
 import { Product } from "@/types";
 import ProductPanel from "@/components/productFeatures";
-import PrevNext from '@/components/PrevNext'
 
 export async function generateMetadata ({searchParams}:{searchParams: {id:string,title:string}} ){
   return {title:searchParams.title}
 }
-
+ 
 export default async function Page({ searchParams,params }: { params: { title: string },searchParams: { id: string,title:string} }
   ) {
   const { id } = searchParams;
   let product:Product;
     try {
       product=await getProduct(parseInt(id)); // with nextjs backend DB  access
-      product.imgurl=JSON.parse(product.imgurl)
+      //product.imgurl=JSON.parse(product.imgurl)
      // product=await getProduct_gql (parseInt(id))
       console.log("product", product);  //with wrodpress GQL access
       if (!product){
@@ -57,7 +56,6 @@ return(  <>
     </div>
     <div><ProductPanel product={product}/> </div>
     <div>{"project application cases"}</div>
-    <PrevNext cursor={cursor} />
 
   </>
 )};

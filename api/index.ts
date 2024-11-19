@@ -1,5 +1,6 @@
-import {getProduct,getProductSummary,getProject} from './nextjsApi'
-//import {getAllProducts_gql,getPreNextProduct_gql,getProductIdByTitle_gql,getAllProjects_gql,getProduct_gql,getProject_gql} from './wpApi'
+import {getProduct,getProductSummary,getProject} from './js-get'
+import { updateProduct,updateProject,addNewProduct } from './js-update'
+//import {getAllProducts_gql,getPreNextProduct_gql,getProductIdByTitle_gql,getAllProjects_gql,getProduct_gql,getProject_gql} from './wp-api'
 
 /*
 export {
@@ -18,4 +19,7 @@ export {
     getProduct,
     getProductSummary,
     getProject,
+    updateProduct,
+    addNewProduct,
+    updateProject   
 }

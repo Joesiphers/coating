@@ -1,7 +1,7 @@
 'use client'
 
-import { loadMoreProductsPaginated_gql } from "@/api/wpApi"
-import { loadMoreProducts } from "@/api/nextjsApi"
+import { loadMoreProductsPaginated_gql } from "@/api/wp-api"
+import { loadMoreProducts } from "@/api/js-get"
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"

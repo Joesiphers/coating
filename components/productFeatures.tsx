@@ -9,7 +9,7 @@ export default function ProductPanel ({product}:{product:Product})
     const tabs =['Features','Tech Designed','Application','Certificates']
     const tabContent=tabContentArray.map(i=>
             {return <TabPanel key={i} className=' w-full bg-gray-200/[0.8] py-4 h-[30rem]'>
-            {product[i].map(j=> 
+            {product[i]&&product[i].map(j=> 
                 j instanceof Array ? 
                 <div key={j} className="text-left py-2">
                                 <li className="text-lg " >{j[0]}</li>

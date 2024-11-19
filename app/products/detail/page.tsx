@@ -1,5 +1,5 @@
-import { getProduct } from "api/nextjsApi";
-import {getProduct_gql}from "api/wpApi";
+import { getProduct } from "@/api/js-get";
+import {getProduct_gql}from "@/api/wp-api";
 import { Product } from "@/types";
 import Image from "next/image";
 import type { Metadata } from "next";

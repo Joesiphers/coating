@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getProject } from "@/api/nextjsApi";
-import { getAllProjects_gql } from "@/api/wpApi";
+import { getProject } from "@/api/js-get";
+import { getAllProjects_gql } from "@/api/wp-api";
 import { Project,ProjectGQL } from "@/types";
 import { Metadata } from "next";
 

@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { getProject } from "api/nextjsApi";
+import { getProject } from "@/api/js-get";
 import Scroll from "@/utils/scrollToTop"
-import { getProject_gql,getProductIdByTitle_gql ,getProduct_gql} from "@/api/wpApi";
+import { getProject_gql,getProductIdByTitle_gql ,getProduct_gql} from "@/api/wp-api";
 import Link from "next/link";
 
 export  const  generateMetadata = async ({params})=> {

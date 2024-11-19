@@ -3,7 +3,7 @@
 import { dbquery } from "utils/db"; /*import from absolute path need to edit jsconfig.json*/
 
 export async function getProduct(product_id: number | "all") {
-  console.log("api/nextjsApi getProducts with" , product_id)
+  //console.log("api/js-get getProducts with" , product_id)
   try{
     if (product_id=="all"){
       return await dbquery(`SELECT * FROM products`)
@@ -11,9 +11,12 @@ export async function getProduct(product_id: number | "all") {
     else{
       const values=[product_id];
       const query = `SELECT * FROM products WHERE product_id=$1`;
-      
       const data =await dbquery (query, values)
-      return data[0]
+      const product = data[0]
+      //product.imgurl=JSON.parse(product.imgurl)
+     // console.log("product", product)
+      //product.features=JSON.parse(product.features)
+      return product
       }
     }
   catch(error){

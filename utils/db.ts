@@ -15,13 +15,13 @@ export async function dbquery(
     const client = await pool.connect();
    // console.log("db.ts access connected", query, values)
     const res = await client.query(query, values);     
-    //console.log("db.ts get res", query, values)
+  //  console.log("db.ts execute await query", query, values)
     client.release();
-    //console.log("quering : ", query, values, res.rows);
+   // console.log("quering : ", query, values, res.rows);
     return res.rows;
   } catch (error) {
-    console.log("db access error : ", error)
-    throw new Error( "Data Access error");
+    console.log("db.ts log db access error : ", error)
+    throw new Error( "throw new error db.ts.dbquer Data Access error");
   }
 }
 /** const query = `

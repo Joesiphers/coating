@@ -1,5 +1,5 @@
 import Link from "next/link"
-import {getPreNextProduct_gql} from '@/api/wpApi'
+import {getPreNextProduct_gql} from '@/api/wp-api'
 
 
 

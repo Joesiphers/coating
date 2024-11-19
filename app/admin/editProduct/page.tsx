@@ -1,6 +1,6 @@
 import Link from "next/link";
 import  Pagination from "@/components/Pagination";
-import { getProduct,getProductSummary } from "api/nextjsApi";
+import { getProduct,getProductSummary } from "@/api/js-get";
 import { parse_title_to_url,parseProducts } from "utils/utils";
 import { Cursor, Product } from "@/types";
 //import { getAllProducts_gql, loadMoreProductsPaginated_gql } from "@/api/wpApi";
@@ -25,10 +25,15 @@ export default async function Products() {
    let productsArray = null;
 try {
     productsArray = await getProductSummary("all");
-      if (productsArray) {
+    console.log("productsArr", productsArray);  
+    
+    /*
+    if (productsArray) {
         products = parseProducts(productsArray);
         console.log("products", products);
       }
+        */
+    products=productsArray;
   } catch (err) {
     const message = err instanceof Error ? err.message : "unknown Error";
         //throw err; //goes to error.js will pop up a error on web. not good
@@ -46,11 +51,12 @@ try {
       <div className=" justify-between my-12 md:grid md:grid-cols-2 md:gap-6">
         {products.map((product) => {
          return <div key={product.product_id}>
-                  <ProductCard product={product} />
                   <Link href={{
                     pathname:' editProduct/editPage',
                     query:{product_id:product.product_id}
                     }}> 
+                    <ProductCard product={product} />
+                  
                     <button>EDIT</button>
 
                   </Link>
@@ -58,9 +64,14 @@ try {
          </div>
         })}
       </div>
-        <LoadMore cursor={""
-          /*pageInfo.endCursor*/
-          } />
+
+      <Link href={{
+                    pathname:' editProduct/editPage',
+                    query:{product_id:null}
+                    }}> 
+                    <button>Add New</button>
+
+      </Link>            
       <Pagination  />
     </div>
   );
