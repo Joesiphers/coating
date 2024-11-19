@@ -9,8 +9,9 @@ import LoadMore from "@/components/LoadMore";
 
 
 export default async function Products() {
+
   let products:Product[]=[];
-  let pageInfo:Cursor;
+  //let pageInfo:Cursor;
   /*try {  
       [products,pageInfo]= await loadMoreProductsPaginated_gql (null);
   // console.log("ProductPage wp products", products,pageInfo)
@@ -25,8 +26,14 @@ export default async function Products() {
    let productsArray = null;
 try {
     productsArray = await getProductSummary("all");
-    console.log("productsArr", productsArray);  
-    
+    /*console.log("productsfetch");  
+    productsArray = await fetch(
+      `http://localhost:3000/admin/api/products?product_id=all`, {
+      method: "GET",
+      }
+   )
+      */
+    console.log("productsArr", productsArray); 
     /*
     if (productsArray) {
         products = parseProducts(productsArray);
@@ -46,7 +53,7 @@ try {
     <div className="w-5/6 m-auto ">
 
       <div className="text-sky-600">
-        Edit Products
+        Refresh Products
       </div>
       <div className=" justify-between my-12 md:grid md:grid-cols-2 md:gap-6">
         {products.map((product) => {
@@ -71,7 +78,7 @@ try {
                     }}> 
                     <button>Add New</button>
 
-      </Link>            
+      </Link>          
       <Pagination  />
     </div>
   );

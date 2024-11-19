@@ -1,11 +1,11 @@
 import { getProduct} from "@/api"
-import Test from "./test"
+import EditPageUI from "./editClientPage"
     export default async function EditProduct ({searchParams}:{searchParams:Promise<{ [key: string]: string | undefined }>}){
         const {product_id }=(await searchParams)
         if (!product_id) {
             return <>
             <label>Product Title</label> <input type="text" defaultValue={"New product"}  />
-             <Test product={null}  />
+             <EditPageUI product={null}  />
              
          </>}
 
@@ -16,7 +16,7 @@ import Test from "./test"
          
     return (<>
        <label>Product Title</label> <input type="text" defaultValue={product.title}  />
-        <Test product={product} />
+        <EditPageUI product={product} />
         
     </>)
 }

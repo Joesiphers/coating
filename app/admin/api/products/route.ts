@@ -1,5 +1,5 @@
 import { updateProduct,addNewProduct } from "@/api/js-update";
-import { getProduct } from "@/api/js-get";
+import { getProduct ,getProductSummary} from "@/api/js-get";
 import fs from "fs";
 import { NextRequest, NextResponse } from "next/server";
 import path from "node:path";
@@ -11,23 +11,24 @@ import path from "node:path";
 }
 
 export async function POST(request:NextRequest) {
-  console.log("req");
+  console.log("POST req");
   //const req = fileUpload.array("files");
   const formData = await request.formData();
   let recordData 
-  let images:File; // formData.get("data");
+  let images:File[]=[];
   if (formData){
     const data =(formData.get("data")); // formData.get("data");
     data? recordData = JSON.parse(data):null
  
-  //console.log(recordData, "recordData");
+  console.log(recordData, "recordData");
    images = formData.getAll("files");
  }
   //console.log("images",typeof images, images);
   //path to save image in public/uploads/images
   const savePath = path.join("public", "uploads", "images");
   //console.log("savePath", savePath);
-  let imageUrlArray = recordData.imgurl;
+  let imageUrlArray =[] 
+   if (recordData.imgurl) {imageUrlArray =recordData.imgurl};
   //console.log("imageUrlArray", imageUrlArray);
   //for (let i=0;i<images.length;i++ ){
   for (let image of images) {
@@ -66,21 +67,40 @@ export async function POST(request:NextRequest) {
     },
   });
 }
-export async function GET(request:NextRequest, response:NextResponse) {
+export async function GET (request:NextRequest, response:NextResponse) {
+  console.log("GET REQUEST")
   const { searchParams } = new URL(request.url);
-  // console.log("searchParams",searchParams)
+   console.log("searchParams",searchParams)
   const product_id = searchParams.get("product_id");
   // console.log("id",id)
   if (product_id){
- try { const res = await getProduct(product_id);
-  // console.log("res",res)
-  const product = JSON.stringify(res);
-  return Response.json({ res });
+    try {const res = await getProduct(product_id);
+      // console.log("res",res)
+      const product = JSON.stringify(res);
+      return Response.json({ res });
 
-}catch(err){
-  throw new Error("get product route.ts handler Eror")
-}
-}else {throw new Error (`Product Route Handler error with no id found`)}
+    }catch(err){
+      throw new Error("get product route.ts handler Eror")
+    }
+    }else if (product_id=='all'){
+      try {
+        const res= await getProductSummary ("all") 
+        return new Response((res)
+        , {
+          status: 200,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
+      })
+      }
+      catch(err){
+        throw new Error("get productSummary route.ts handler Eror")
+      }
+    }
+    else {
+       throw new Error (`Product Route Handler error with no id found`)}
   //return response.status(200).json(res)
   /*   return new Response("res", {
       data:res,
