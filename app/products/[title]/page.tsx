@@ -6,12 +6,13 @@ import { Product } from "@/types";
 import ProductPanel from "@/components/productFeatures";
 
 export async function generateMetadata ({searchParams}:{searchParams: {product_id:string,title:string}} ){
-  return {title:searchParams.title}
+  const {title}=await searchParams
+  return {title:title}
 }
  
 export default async function Page({ searchParams,params }: { params: { title: string },searchParams: { product_id: string,title:string} }
   ) {
-  const {product_id } = searchParams;
+  const {product_id } =await searchParams;
   let product:Product;
     try {
       product=await getProduct(parseInt(product_id)); // with nextjs backend DB  access

@@ -1,13 +1,13 @@
 'use client'
 import { Pagination } from "@mui/material";
 
-export default function Page (){
+export default function Page ({pages,pageClicked}){
 
     return <Pagination 
     shape="rounded"
-    onClick={(e)=>console.log(e.target.innerText)} 
+    onClick={(e)=>pageClicked(e.target.innerText)} 
     onChange={(e,page)=>console.log(page)}
-    count={10}
+    count={pages}
     
     />
 }

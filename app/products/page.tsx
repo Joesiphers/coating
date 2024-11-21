@@ -1,32 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
 import  Pagination from "../../components/Pagination";
-import { getProduct,getProductSummary } from "@/api/js-get";
-import { parse_title_to_url,parseProducts } from "utils/utils";
-import { Cursor, Product } from "../../types";
+import { getProductSummary,getPages } from "@/api/js-get";
+import { parse_title_to_url} from "utils/utils";
+import { Product } from "../../types";
 import ProductCard from "@/components/productSumaryCard";
 import type { Metadata } from "next";
 import LoadMore from "@/components/LoadMore";
-
+import NextPagination from "@/components/NextPagination";
 export const metadata:Metadata ={
   title:'Nex Products'
 }
 
-export default async function Products() {
-  let products:Product[]=[];
+export default async function Products({searchParams}) {
+  const page=Number((await searchParams).page)
+  let cursor=(page-1)*2;
+  let batch=2
+  const totalcount= await getPages()
+  const totalPages=Math.round (totalcount/batch)
+  console.log("products", page);
 
-   let productsArray = null;
-try {
-    products = await getProductSummary("all");
-    console.log("products", products);
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "unknown Error";
-        //throw err; //goes to error.js will pop up a error on web. not good
-      //call the modal
-    //  return (      <Modal info={message} />      );
 
-  }  
-
+    const products = await getProductSummary(cursor, batch);
   return (
     <div className="w-5/6 m-auto ">
       <div className="w-5/6 mx-auto">
@@ -68,11 +63,9 @@ try {
           </div> }
         )}
 
-      </div>
-        <LoadMore cursor={""
-          /*pageInfo.endCursor*/
-          } />
-      <Pagination  />
+      </div>        <LoadMore cursor={cursor} batch={batch} />
+
+      <NextPagination totalPages={totalPages} currentPage={page}   />
     </div>
   );
 }

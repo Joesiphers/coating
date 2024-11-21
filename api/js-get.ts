@@ -1,7 +1,11 @@
 /**api use nodejs, nextjs as server to fetch data from DB */
 
 import { dbquery } from "utils/db"; /*import from absolute path need to edit jsconfig.json*/
-
+export async function getPages():Promise<number> {
+  const data=await dbquery('select count(*) from products')
+  const pages=data[0].count;
+  return pages
+}
 export async function getProduct(product_id: number | "all") {
   //console.log("api/js-get getProducts with" , product_id)
   try{
@@ -25,15 +29,15 @@ export async function getProduct(product_id: number | "all") {
   }
 }
 
-export async function getProductSummary(product_id: number | "all") {
+export async function getProductSummary(cursor:number,product_batch: number | "all") {
   //console.log("api/nextjsApi getProductsSummary with" , product_id)
   try{
-    if (product_id=="all"){
+    if (product_batch=="all"){
       return await dbquery(`SELECT product_id, title, imgurl,subtitle FROM products`)
     }
     else{
-      const values=[product_id];
-      const query = `SELECT * FROM products WHERE id=$1`;
+      const values=[cursor, product_batch];
+      const query = `SELECT * FROM products ORDER BY product_id limit $2 OFFSET $1`;
       return await dbquery (query, values)
       }
     }
@@ -43,22 +47,19 @@ export async function getProductSummary(product_id: number | "all") {
   }
 }
 
-export async function loadMoreProducts (cursor:number = 0 ){
-  const BATCH_SIZE=4
+export async function loadMoreProducts (cursor:number,batch:number ){
   try {
-      const values = [cursor];
-      const query = `SELECT * FROM products ORDER BY product_id LIMIT ${BATCH_SIZE} OFFSET $1`;
+      const values = [cursor,batch];
+      const query = `SELECT * FROM products ORDER BY product_id LIMIT $2 OFFSET $1`;
       return await dbquery(query, values);
-    /* else {
-      const query = `SELECT * FROM products ORDER BY product_id LIMIT ${BATCH_SIZE}`;
-      return await dbquery(query);
-    }*/
+
   }catch (error) {
     console.error("nextjsApi loadMoreProducts got error", error)
     throw error
   }
 
 }
+
 
 export async function getProject(id: number | "all") {
 

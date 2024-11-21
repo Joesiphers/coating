@@ -1,35 +1,27 @@
 'use client'
+
+import { loadMoreProducts } from "@/api/js-get"
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { parse_title_to_url } from "utils/utils";
 import { Product} from "@/types"
 
-export default function LoadMore({cursor,batch}:{cursor:number, batch:number}){
+
+export default function LoadMore({cursor}:{cursor:string}){
     const [moreProducts, setMoreProducts]=useState<Product[]|[]> ([] )
     const [hasMorePage,setHasMorePage]=useState(true)
     const [startCursor, setStartCursor]=useState(cursor)
     const loadmore=async ()=>{
-        console.log(cursor, batch,startCursor)
-        const products= await fetch (`/api/products?cursor=${startCursor}&batch=${batch} `)
-                                  .then(res=>res.json( )).then(res=>res.products).then(res=>{
-                                    return res.map((product:Product)=>{
-                                        product.title=product.title.replace(" ",'_')
-                                        return product
-                                    })
-                                  })
-
+        const [products,nextcursors] =await loadMoreProducts(startCursor)
+        //console.log('22cursors',startCursor,products,moreProducts)
         setMoreProducts(moreProducts.concat(products))
-        products.length<batch?setHasMorePage(false):setHasMorePage(true) //setHasMorePage(nextcursors.hasNextPage)
-        setStartCursor(cursor+batch)
-        console.log('cursors',startCursor,products,moreProducts)
-
+        setHasMorePage(nextcursors.hasNextPage)
+        setStartCursor(nextcursors.endCursor)
     }
-    //console.log('Load More products',moreProducts,startCursor)
     return <div className=" justify-between my-12 md:grid md:grid-cols-2 md:gap-6"> 
-            {moreProducts && moreProducts.map((product, index) => {
-              
-            return <div
+            {moreProducts && moreProducts.map((product, index) => (
+          <div
             className="p-4 mx-auto my-8 md:mx-2 shadow-xl border-solid border-2 border-slate-300 rounded-md w-3/5 md:w-full h-64 overflow-hidden
                           transition-colors hover:border-gray-400 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30
             "
@@ -37,7 +29,7 @@ export default function LoadMore({cursor,batch}:{cursor:number, batch:number}){
           >
             <Link
               href={{
-                pathname: `./products/${product.title}}`,
+                pathname: `./products/${parse_title_to_url(product.title)}`,
                 query: { product_id: product.product_id },
               }}
               scroll={true}
@@ -54,15 +46,15 @@ export default function LoadMore({cursor,batch}:{cursor:number, batch:number}){
               </div>
               <p>{product.subtitle}</p>
             </Link>
-            <Link href={`products/detail?id=${product.product_id}`}>
+            <Link href={`products/detail?id=${product.productId}`}>
               <br />
               <p>try dynmic route</p>
-              <p>link to {` toto ${product.product_id}`} </p>
+              <p>link to {` toto ${product.productId}`} </p>
             </Link>
           </div>
-        })}
+        ))}
         <button 
-            onClick={()=> loadmore()} disabled={!hasMorePage}
+            onClick={loadmore} disabled={!hasMorePage}
             >
             {hasMorePage?"Load More":"The End"}</button>
     

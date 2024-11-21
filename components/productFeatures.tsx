@@ -10,7 +10,7 @@ export default function ProductPanel ({product}:{product:Product})
             {return <TabPanel key={i} className=' w-full bg-gray-200/[0.8] py-4 h-[30rem]'>
             {product[i]&&product[i].split(";").map(j=> 
                {
-                console.log ('productFeatures panel j',i,j);
+//                console.log ('productFeatures panel j',i,j);
                 return j&&<li className="text-left text-lg" key={j} > {j}</li> }
             )
             }
