@@ -1,5 +1,5 @@
 import Link from "next/link";
-import  Pagination from "@/components/Pagination";
+import  Pagination from "@/components/MUIPagination";
 import { getProduct,getProductSummary } from "@/api/js-get";
 import { parse_title_to_url,parseProducts } from "utils/utils";
 import { Cursor, Product } from "@/types";

@@ -1,25 +1,9 @@
 /*
-import Link from 'next/link';
-
-export default function Pagination({ totalPages,currentPage }: { totalPages: number ,currentPage:number}) {
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-  return (
-    <div className="flex justify-center mt-4">
-      {pages.map((page) => (
-        <Link
-          key={page}
-          href={`/products?page=${page}`}
-          className="px-3 py-1 mx-1 text-gray-500 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
-        >
-          {page}
-        </Link>
-      ))}
-    </div>
-  );
-}
+create page Link /products?page=number
+route to products
 */
 
-//'use client';
+
 
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';

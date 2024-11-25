@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import  Pagination from "../../components/Pagination";
-import { getProductSummary,getPages } from "@/api/js-get";
+import  Pagination from "../../components/MUIPagination";
+//import { getProductSummary,getPages } from "@/api/js-get";
+import { getProductSummary,getPages } from "@/app/api/fetch_api";
+
 import { parse_title_to_url} from "utils/utils";
 import { Product } from "../../types";
 import ProductCard from "@/components/productSumaryCard";
@@ -13,15 +15,16 @@ export const metadata:Metadata ={
 }
 
 export default async function Products({searchParams}) {
-  const page=Number((await searchParams).page)
-  let cursor=(page-1)*2;
-  let batch=2
-  const totalcount= await getPages()
-  const totalPages=Math.round (totalcount/batch)
-  console.log("products", page);
+  const pageNumber=((await searchParams).page||1);
+  let page_batch=2; //list quantity each page
+  const totalcount=( await getPages()).total_count
+  console.log (typeof parseInt( totalcount))
+
+  const totalPages=Math.round (parseInt(totalcount)/page_batch)
+  console.log("products?page=", pageNumber);
 
 
-    const products = await getProductSummary(cursor, batch);
+  const products = await getProductSummary(pageNumber);
   return (
     <div className="w-5/6 m-auto ">
       <div className="w-5/6 mx-auto">
