@@ -5,13 +5,17 @@ import { Product } from "@/types";
 import { useRouter } from 'next/navigation'
  
 
-const Page = ({product}) => {
+const Page = ({product}:{product:Product}) => {
   // console.log(product, "editPage");
-
+  const root_url='http://localhost:5002'
   const [product_data, setProduct_data] = useState(product);
   const [files, setFiles] = useState<
-    { id: number; file: File | null; url: string | ArrayBuffer | null }[]
+    {  file: File | null; url: string | ArrayBuffer | null }[]
   >([]);
+  const [prevfiles, setprevFiles] = useState<
+  {file: File | null; url: string | ArrayBuffer | null }[]
+>([]);
+
   const router = useRouter()
 
 
@@ -27,24 +31,27 @@ const Page = ({product}) => {
     const formdata = new FormData();
     formdata.append("data", JSON.stringify(toSaveData));
     for (let i = 0; i < toAddFiles.length; i++) {
-      formdata.append("files", toAddFiles[i].file);
+      formdata.append("files", toAddFiles[i]);
     }
-   // console.log("tosave", toSaveData, toAddFiles);
+    console.log("tosave", toSaveData, toAddFiles,product);
    // savePage(toSaveData, toAddFiles)
 
     let response =""
-    if (product) {response = await fetch(`/admin/api/products?`, {
+    //if (product) {response = await fetch(`/admin/api/products?`, {
+    if (product) 
+      {console.log ('backendurl',root_url)
+        response = await fetch(` ${root_url}/products?id=124`, {  
       method: "POST",
       body: formdata,
-    }).then((res) => res.text());
-       }else {response = await fetch(`/admin/api/products?`, {
+       }).then((res) => res.text());
+       }else {response = await fetch(`/admin/api/products?id=124`, {
           method: "PUT",
           body: formdata,
         }).then((res) => res.text());
 
         }
     console.log("response", JSON.stringify(response));
-    router.push ('/admin/editProduct')
+    //router.push ('/admin/editProduct')
     };
 
   const handleInputChange = ( field, value) => {
@@ -54,15 +61,18 @@ const Page = ({product}) => {
   };
   const handleImageUpload =async (e) => {
       const fileReader = new FileReader();
-      const file = e.target.files[0];
+      const loadedFile = e.target.files[0];
+      setFiles([...files, loadedFile])
       fileReader.onload = () => {
-        setFiles((prevFiles) => [
+        //setProduct_data({...product_data, imgurl:imgurl})
+        setprevFiles((prevFiles) => [
           ...prevFiles,
-          { file, url: fileReader.result },
+          { loadedFile, url: fileReader.result },
         ]);
       };
-      fileReader.readAsDataURL(file);
+      fileReader.readAsDataURL(loadedFile);
    // console.log("files", files,files[0].file?.name);
+
   };
   const handleDeleteImage = ( url) => {
     console.log("delete URL", url)
@@ -70,7 +80,7 @@ const Page = ({product}) => {
       return file.url !== url;
     });
     //delete the just upload but not saved images
-    setFiles(updateFiles);
+    setprevFiles(updateFiles);
     //delete the existing images
       let updateExistingImgurl=product_data?.imgurl?.filter(i=>i!==url)||null
       setProduct_data({...product_data, imgurl:updateExistingImgurl})
@@ -126,7 +136,7 @@ const Page = ({product}) => {
             onChange={(e) => handleImageUpload(e)}
 
           />
-          {files[0] && files.map(
+          {prevfiles[0] && prevfiles.map(
               (i, index) =>
               {//console.log(i.file?.name,i.url, "file")
                   return <span key={i.file?.name||index}>

@@ -1,4 +1,5 @@
-import { getProduct} from "@/api"
+//import { getProduct} from "@/api"
+import {getProduct } from'@/app/api/fetch_api'
 import EditPageUI from "./editClientPage"
     export default async function EditProduct ({searchParams}:{searchParams:Promise<{ [key: string]: string | undefined }>}){
         const {product_id }=(await searchParams)
@@ -9,11 +10,11 @@ import EditPageUI from "./editClientPage"
              
          </>}
 
-        const product_data = await getProduct  (parseInt( product_id))
-        //console.log("edit product",product_data)
+        const{result} = await getProduct  (parseInt( product_id))
 
-        const product ={...product_data}//, imgurl: JSON.parse(product_data.imgurl)} ;
-         
+        const product =result[0]//, imgurl: JSON.parse(product_data.imgurl)} ;
+             console.log("edit product",result[0] )
+    
     return (<>
        <label>Product Title</label> <input type="text" defaultValue={product.title}  />
         <EditPageUI product={product} />

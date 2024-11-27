@@ -10,3 +10,7 @@ export async function getTotalPages():Promise<number> {
     //    console.log("getPages",data)
 return data.total_pages
   }
+export const getProduct =async (product_id:number)=>{
+    const data=await fetch (`${rooturl}/products/details?product_id=${product_id}`).then(res=>res.json())
+    return data
+}

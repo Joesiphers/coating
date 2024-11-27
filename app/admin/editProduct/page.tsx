@@ -1,46 +1,25 @@
 import Link from "next/link";
-import  Pagination from "@/components/MUIPagination";
-import { getProduct,getProductSummary } from "@/api/js-get";
+import  Pagination from "@/components/NextPagination";
+//import { getProduct,getProductSummary } from "@/api/js-get";
+import {getTotalPages, getProductSummary } from "@/app/api/fetch_api";
 import { parse_title_to_url,parseProducts } from "utils/utils";
 import { Cursor, Product } from "@/types";
 //import { getAllProducts_gql, loadMoreProductsPaginated_gql } from "@/api/wpApi";
 import ProductCard from "@/components/productSumaryCard";
-import LoadMore from "@/components/LoadMore";
 
 
-export default async function Products() {
+export default async function Products( {searchParams}) {
+  const pageNumber=((await searchParams).page||1);
+  let page_batch=2; //list quantity each page
+  const totalPages=( await getTotalPages())
 
   let products:Product[]=[];
-  //let pageInfo:Cursor;
-  /*try {  
-      [products,pageInfo]= await loadMoreProductsPaginated_gql (null);
-  // console.log("ProductPage wp products", products,pageInfo)
-  
-   }catch(err){
-     console.error(err)
-     throw new Error ("fetching WP_Products error")
-   }
-*/
-
-/* use nextjs direct query DB */
-   let productsArray = null;
 try {
-    productsArray = await getProductSummary("all");
-    /*console.log("productsfetch");  
-    productsArray = await fetch(
-      `http://localhost:3000/admin/api/products?product_id=all`, {
-      method: "GET",
-      } 
-   )
-      */
-    console.log("productsArr", productsArray); 
-    /*
-    if (productsArray) {
-        products = parseProducts(productsArray);
-        console.log("products", products);
-      }
-        */
-    products=productsArray;
+    const {result }= await getProductSummary("all");
+
+    console.log("productsArr", result); 
+
+    products=result;
   } catch (err) {
     const message = err instanceof Error ? err.message : "unknown Error";
         //throw err; //goes to error.js will pop up a error on web. not good
@@ -79,7 +58,7 @@ try {
                     <button>Add New</button>
 
       </Link>          
-      <Pagination  />
+      <Pagination totalPages={totalPages} currentPage={pageNumber}    />
     </div>
   );
 }
