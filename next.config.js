@@ -4,10 +4,16 @@ const nextConfig = {
     images: {
         remotePatterns: [
           {
-            protocol: 'http',
-            hostname: '34.82.14.85',
+            protocol: 'https',
+            hostname: 'neonpg.onrender.com',
             port: '',
-            pathname: '/**',
+            pathname: '/uploads/images/**',
+          },
+          {
+            protocol: 'http',
+            hostname: 'localhost',
+            port: '5002',
+            pathname: '/uploads/images/**',
           },
         ],
       },

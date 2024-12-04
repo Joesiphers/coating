@@ -1,8 +1,13 @@
 //const rooturl =process.env.JS_RESTURL
 const rooturl = 'http://localhost:5002'
+
+
 export  const getProductSummary = async (pageNumber=1)=>{
     const data= await fetch(`${rooturl}/products?page=${pageNumber}`)
-    return data.json()
+                        .then(res=>res.json())
+                        .catch(err=>console.log("getProductSummary", err))
+   // console.log("getProductSummary", data)                        
+                        return data
 }
 export async function getTotalPages():Promise<number> {
     const data=await fetch ('http://localhost:5002/products/total_pages')

@@ -12,7 +12,6 @@ export default async function Products( {searchParams}) {
   const pageNumber=((await searchParams).page||1);
   let page_batch=2; //list quantity each page
   const totalPages=( await getTotalPages())
-
   let products:Product[]=[];
 try {
     const {result }= await getProductSummary("all");

@@ -46,7 +46,23 @@ export async function getProductSummary(cursor:number,product_batch: number | "a
     throw error
   }
 }
-
+export async function getProjectSummary(cursor:number,project_batch: number | "all") {
+  //console.log("api/nextjsApi getProductsSummary with" , product_id)
+  try{
+    if (project_batch=="all"){
+      return await dbquery(`SELECT project_id, title, imgurl,subtitle FROM products`)
+    }
+    else{
+      const values=[cursor, project_batch];
+      const query = `SELECT * FROM products ORDER BY product_id limit $2 OFFSET $1`;
+      return await dbquery (query, values)
+      }
+    }
+  catch(error){
+    console.error("nextjsApi API got error", error)
+    throw error
+  }
+}
 export async function loadMoreProducts (cursor:number,batch:number ){
   try {
       const values = [cursor,batch];

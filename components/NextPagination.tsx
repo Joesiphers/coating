@@ -13,6 +13,7 @@ import { generatePagination } from '@/utils/utils';
 
 export default function Pagination({ totalPages,currentPage }: { totalPages: number ,currentPage:number}) {
   const pathname = '/products';
+  
   const createPageURL = (pageNumber: number | string) => {
     return `${pathname}?page=${pageNumber}`;
   };

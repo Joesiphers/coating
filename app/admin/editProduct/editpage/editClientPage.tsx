@@ -3,17 +3,18 @@ import { useState, useEffect} from "react";
 import Image from "next/image";
 import { Product } from "@/types";
 import { useRouter } from 'next/navigation'
- 
+import { file } from "jszip";
+
 
 const Page = ({product}:{product:Product}) => {
   // console.log(product, "editPage");
   const root_url='http://localhost:5002'
   const [product_data, setProduct_data] = useState(product);
   const [files, setFiles] = useState<
-    {  file: File | null; url: string | ArrayBuffer | null }[]
+    {  file: File | null; url: string  }[]
   >([]);
   const [prevfiles, setprevFiles] = useState<
-  {file: File | null; url: string | ArrayBuffer | null }[]
+  {name:string ; url: string | ArrayBuffer }[]
 >([]);
 
   const router = useRouter()
@@ -34,24 +35,22 @@ const Page = ({product}:{product:Product}) => {
       formdata.append("files", toAddFiles[i]);
     }
     console.log("tosave", toSaveData, toAddFiles,product);
-   // savePage(toSaveData, toAddFiles)
 
     let response =""
-    //if (product) {response = await fetch(`/admin/api/products?`, {
     if (product) 
       {console.log ('backendurl',root_url)
         response = await fetch(` ${root_url}/products?id=124`, {  
       method: "POST",
       body: formdata,
        }).then((res) => res.text());
-       }else {response = await fetch(`/admin/api/products?id=124`, {
+       }else {response = await fetch(`${root_url}/products?id=124`, {
           method: "PUT",
           body: formdata,
         }).then((res) => res.text());
 
         }
     console.log("response", JSON.stringify(response));
-    //router.push ('/admin/editProduct')
+    router.push ('/admin/editProduct')
     };
 
   const handleInputChange = ( field, value) => {
@@ -67,23 +66,30 @@ const Page = ({product}:{product:Product}) => {
         //setProduct_data({...product_data, imgurl:imgurl})
         setprevFiles((prevFiles) => [
           ...prevFiles,
-          { loadedFile, url: fileReader.result },
+          { name:loadedFile.name, url: fileReader.result },
         ]);
       };
       fileReader.readAsDataURL(loadedFile);
    // console.log("files", files,files[0].file?.name);
 
   };
-  const handleDeleteImage = ( url) => {
-    console.log("delete URL", url)
-    const updateFiles = files.filter(file => {
-      return file.url !== url;
+  const handleDeleteImage = ( name:string) => {
+    const toDeleteImage=files.findIndex(file=>file.name==name)
+    console.log("deleteto", toDeleteImage)
+    const updateFiles = prevfiles.filter(file => {
+      console.log("delete, existing URL", file,name)
+      return file.name !== name;
     });
+    console.log("delete prefiles remaing", updateFiles)
+
     //delete the just upload but not saved images
     setprevFiles(updateFiles);
+    setFiles(files.filter(file=>file.name!==name))
     //delete the existing images
-      let updateExistingImgurl=product_data?.imgurl?.filter(i=>i!==url)||null
-      setProduct_data({...product_data, imgurl:updateExistingImgurl})
+    let updateExistingImgurl=product_data?.imgurl?.filter(i=>{
+        console.log(i,name, "i!==name")
+        return i!==name})||null
+    setProduct_data({...product_data, imgurl:updateExistingImgurl})
   };
   const tdcss = "p-2 w-full border-solid border-2 border-indigo-600 flex";
   const list=[ 'description','features','certificates','product_application','product_designed' ]
@@ -99,7 +105,7 @@ const Page = ({product}:{product:Product}) => {
         }
       />
     </div>})
-
+//console.log(product_data, "product_data")
  
   return (
     <div className="p-8" >
@@ -139,7 +145,7 @@ const Page = ({product}:{product:Product}) => {
           {prevfiles[0] && prevfiles.map(
               (i, index) =>
               {//console.log(i.file?.name,i.url, "file")
-                  return <span key={i.file?.name||index}>
+                  return <span key={i.file?.name||index} >
                     <Image
                       src={i.url}
                       alt="img"
@@ -147,7 +153,7 @@ const Page = ({product}:{product:Product}) => {
                       height={38}
                       className="inline"
                     />
-                    <button onClick={() => handleDeleteImage( i.url)}>
+                    <button onClick={() => handleDeleteImage( i.name)}>
                       Del
                     </button>
                   </span>
@@ -157,9 +163,9 @@ const Page = ({product}:{product:Product}) => {
           <div>
             
             {product_data&&product_data.imgurl&&product_data.imgurl.map((url, index) => (
-            <span key={url}>
+            <span key={url} >
               <Image
-                src={url}
+                src={root_url+'/uploads/images/'+url}
                 alt="img"
                 width={50}
                 height={50}

@@ -58,6 +58,35 @@ export async function addNewProduct(recordData: any) {
 
   return res
 }
+export async function addNewProject(recordData: any) {
+  //pattern recordData = {id:idNumber, column1: value1, column2: value2, column3: value3}
+  const Data = recordData; //
+  console.log("add newProduct receivedAPIdata", Data);
+  const values = [
+    Data.title,
+    Data.subtitle,
+    Data.imgurl,
+    Data.description,
+    Data.cursor,
+    Data.content,
+    Data.features,
+    Data.certificates,
+    Data.product_designed,
+    Data.product_application,
+
+  ];
+
+  const addNewQuery = `
+    INSERT INTO projects (title , subtitle, imgurl, description, cursor, content,features, certificates,product_designed, product_application )
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+    RETURNING *;    `;
+   console.log(addNewQuery, Data);
+  const res =await dbquery(addNewQuery, values );
+  //console.log("update js res", res);
+
+  return res
+}
+
 
 export async function updateProject(updateProjectData: any) {
   //pattern recordData = {id:idNumber, column1: value1, column2: value2, column3: value3}

@@ -1,6 +1,9 @@
 //import { getProduct} from "@/api"
 import {getProduct } from'@/app/api/fetch_api'
 import EditPageUI from "./editClientPage"
+const img_root_url=process.env.DEV_BACKEND_URL+'/uploads/images/'
+
+
     export default async function EditProduct ({searchParams}:{searchParams:Promise<{ [key: string]: string | undefined }>}){
         const {product_id }=(await searchParams)
         if (!product_id) {

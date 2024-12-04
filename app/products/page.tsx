@@ -12,7 +12,7 @@ export const metadata:Metadata ={
 }
 
 export default async function Products({searchParams}) {
-  const pageNumber=((await searchParams).page||1);
+  const pageNumber=Number((await searchParams).page||1);
   let page_batch=2; //list quantity each page
   const totalPages=( await getTotalPages())
   console.log("products?page=", pageNumber, 'of',totalPages);
@@ -23,7 +23,7 @@ export default async function Products({searchParams}) {
 
   return (
     <div className="w-5/6 m-auto ">
-      <div className="w-5/6 mx-auto">
+      <div className="w-5/6 mx-auto my-4">
         <p className="text-4xl text-sky-600 mb-4">Pre-Coated Pipes</p>
 
         <Image
@@ -40,7 +40,7 @@ export default async function Products({searchParams}) {
       <div className="text-sky-600">
         Utilise Precision equitment for corrosion proof coating
       </div>
-      <div className=" justify-between my-12 md:grid md:grid-cols-2 md:gap-6">
+      <div className="w-10/12 m-auto justify-between my-12 md:grid md:grid-cols-2 md:gap-6 lg:gap-12">
         {products.map(product => {
           return <div key={product.product_id}>
             <Link
