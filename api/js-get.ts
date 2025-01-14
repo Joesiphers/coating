@@ -28,8 +28,26 @@ export async function getProduct(product_id: number | "all") {
     throw error
   }
 }
+export async function getProductTitleByID(product_idArray: number[] ) {
+  //console.log("api/js-get getProducts with" , product_id)
+  try{
 
-export async function getProductSummary(cursor:number,product_batch: number | "all") {
+      const values=product_idArray;
+      const query = `SELECT title, product_id FROM products WHERE product_id IN (1,2,4); `;
+      //const query = `SELECT title, product_id FROM products WHERE title IN ('Proguard 169 Plus','Proguard CN 200'); `;
+      const products =await dbquery (query)//, values)
+      console.log("products", products)
+      //product.imgurl=JSON.parse(product.imgurl)
+     // console.log("product", product)
+      //product.features=JSON.parse(product.features)
+      return products
+    }
+  catch(error){
+    console.error("nextjsApi API got error", error)
+    throw error
+  }
+}
+export async function getProductSummary(cursor=1,product_batch: number | "all") {
   //console.log("api/nextjsApi getProductsSummary with" , product_id)
   try{
     if (product_batch=="all"){
@@ -50,11 +68,12 @@ export async function getProjectSummary(cursor:number,project_batch: number | "a
   //console.log("api/nextjsApi getProductsSummary with" , product_id)
   try{
     if (project_batch=="all"){
-      return await dbquery(`SELECT project_id, title, imgurl,subtitle FROM products`)
+      return await dbquery(`SELECT project_id, title, imgurl,subtitle FROM projects`)
     }
     else{
       const values=[cursor, project_batch];
-      const query = `SELECT * FROM products ORDER BY product_id limit $2 OFFSET $1`;
+      const query = `SELECT project_id, title, imgurl,subtitle 
+      FROM projects ORDER BY project_id limit $2 OFFSET $1`;
       return await dbquery (query, values)
       }
     }
@@ -63,6 +82,7 @@ export async function getProjectSummary(cursor:number,project_batch: number | "a
     throw error
   }
 }
+
 export async function loadMoreProducts (cursor:number,batch:number ){
   try {
       const values = [cursor,batch];
@@ -77,21 +97,26 @@ export async function loadMoreProducts (cursor:number,batch:number ){
 }
 
 
-export async function getProject(id: number | "all") {
 
-  try {
-    if (id == "all") {
-      return await dbquery(`SELECT * FROM projects`);
-  }
-    else {
-      const values = [id];
-      const query = `SELECT * FROM projects WHERE id=$1`;
-      const projectData:string[] =await dbquery(query, values);
-      return projectData[0]
+  export async function getProject(product_id: number | "all") {
+    //console.log("api/js-get getProducts with" , product_id)
+    try{
+      if (product_id=="all"){
+        return await dbquery(`SELECT * FROM projects`)
+      }
+      else{
+        const values=[product_id];
+        const query = `SELECT * FROM projects WHERE project_id=$1`;
+        const data =await dbquery (query, values)
+        const product = data[0]
+        //product.imgurl=JSON.parse(product.imgurl)
+       // console.log("product", product)
+        //product.features=JSON.parse(product.features)
+        return product
+        }
+      }
+    catch(error){
+      console.error("nextjsApi API got error", error)
+      throw error
     }
-  } catch (err) 
-    { console.log("getProject api Error")
-      throw err
-    }       
-
   }

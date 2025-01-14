@@ -1,15 +1,13 @@
 //import { getProduct} from "@/api"
 import {getProduct } from'@/app/api/fetch_api'
-import EditPageUI from "./editClientPage"
-const img_root_url=process.env.DEV_BACKEND_URL+'/uploads/images/'
-
+import ClientEditPage from "./ClientEditPage"
 
     export default async function EditProduct ({searchParams}:{searchParams:Promise<{ [key: string]: string | undefined }>}){
         const {product_id }=(await searchParams)
         if (!product_id) {
             return <>
             <label>Product Title</label> <input type="text" defaultValue={"New product"}  />
-             <EditPageUI product={null}  />
+             <ClientEditPage product={null}  />
              
          </>}
 
@@ -20,7 +18,7 @@ const img_root_url=process.env.DEV_BACKEND_URL+'/uploads/images/'
     
     return (<>
        <label>Product Title</label> <input type="text" defaultValue={product.title}  />
-        <EditPageUI product={product} />
+        <ClientEditPage product={product} />
         
     </>)
 }

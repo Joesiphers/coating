@@ -1,0 +1,186 @@
+"use client";
+import { useState, useEffect} from "react";
+import Image from "next/image";
+import { Product } from "@/types";
+import { useRouter } from 'next/navigation'
+
+const Page = ({product}:{product:Product}) => {
+  // console.log(product, "editPage");
+  const IMG_URL=process.env.NEXT_PUBLIC_IMG_URL
+  const [product_data, setProduct_data] = useState(product);
+  const [files, setFiles] = useState<
+    {  file: File | null; url: string  }[]
+  >([]);
+  const [prevfiles, setprevFiles] = useState<
+  {name:string ; url: string | ArrayBuffer }[]
+>([]);
+
+  const router = useRouter()
+
+
+  const handleCancel = () => {
+   setProduct_data(product)
+   router.back()
+
+  };
+
+  const handleSave = async () => {
+    
+    const formdata = new FormData();
+    formdata.append("data", JSON.stringify(product_data));
+    for (let i = 0; i < files.length; i++) {
+      formdata.append("files", files[i]);
+    }
+    console.log("tosave", product_data, files,product);
+
+    let response =""
+    if (product) 
+      {console.log ('backendurl',IMG_URL)
+        response = await fetch(` ${IMG_URL}/products`, {  
+      method: "POST",
+      body: formdata,
+       }).then((res) => res.text());
+       }else {response = await fetch(`${IMG_URL}/products`, {
+          method: "PUT",
+          body: formdata,
+        }).then((res) => res.text());
+
+        }
+    console.log("response", JSON.stringify(response));
+    router.push ('/admin/editProduct')
+    };
+
+  const handleInputChange = ( field, value) => {
+    const updatedData = { ...product_data, [field]: value };
+    //console.log(updatedData,field,value, "handleinput")
+    setProduct_data(updatedData);
+  };
+  const handleImageUpload =async (e) => {
+      const fileReader = new FileReader();
+      const loadedFile = e.target.files[0];
+      setFiles([...files, loadedFile])
+      fileReader.onload = () => {
+        //setProduct_data({...product_data, imgurl:imgurl})
+        setprevFiles((prevFiles) => [
+          ...prevFiles,
+          { name:loadedFile.name, url: fileReader.result },
+        ]);
+      };
+      fileReader.readAsDataURL(loadedFile);
+   // console.log("files", files,files[0].file?.name);
+
+  };
+  const handleDeleteImage = ( name:string) => {
+    const toDeleteImage=files.findIndex(file=>file.name==name)
+    console.log("deleteto", toDeleteImage)
+    const updateFiles = prevfiles.filter(file => {
+      console.log("delete, existing URL", file,name)
+      return file.name !== name;
+    });
+    console.log("delete prefiles remaing", updateFiles)
+
+    //delete the just upload but not saved images
+    setprevFiles(updateFiles);
+    setFiles(files.filter(file=>file.name!==name))
+    //delete the existing images
+    let updateExistingImgurl=product_data?.imgurl?.filter(i=>{
+        console.log(i,name, "i!==name")
+        return i!==name})||null
+    setProduct_data({...product_data, imgurl:updateExistingImgurl})
+  };
+  const tdcss = "p-2 w-full border-solid border-2 border-indigo-600 flex";
+  const list=[ 'description','features','certificates','product_application','product_designed' ]
+  const html = list.map(i=>{
+    return <div className={'flex  p-2'} key={i}>
+    <label className="w-1/4">{i}</label>
+      <textarea
+        className={tdcss}
+        rows={5}
+        value={product_data?.[i]||""}
+        onChange={(e) =>
+          handleInputChange( i, e.target.value)
+        }
+      />
+    </div>})
+//console.log(product_data, "product_data")
+ 
+  return (
+    <div className="p-8" >
+
+      <div className={'flex  p-2'} >
+        <label className="w-1/4">Title</label>
+        <input
+          className={tdcss}
+          type="text"
+          value={product_data?.title||""}
+          onChange={(e) => handleInputChange("title", e.target.value)}
+        />
+      </div>
+
+      <div className={'flex  p-2'}>
+         <label className="w-1/4">SubTitle</label>
+        <textarea
+          className={tdcss}
+          value={product_data?.subtitle||""}
+          rows={2}
+          onChange={(e) =>
+            handleInputChange( "subtitle", e.target.value)
+          }
+        />
+      </div>
+      <div className={'flex  p-2'}>
+          <label className="w-1/4">Images    </label>
+        <div className="w-full">
+          <div>
+          <input
+            className={""}
+            type="file"
+            multiple
+            onChange={(e) => handleImageUpload(e)}
+
+          />
+          {prevfiles[0] && prevfiles.map(
+              (i, index) =>
+              {//console.log(i.file?.name,i.url, "file")
+                  return <span key={i.file?.name||index} >
+                    <Image
+                      src={i.url}
+                      alt="img"
+                      width={38}
+                      height={38}
+                      className="inline"
+                    />
+                    <button onClick={() => handleDeleteImage( i.name)}>
+                      Del
+                    </button>
+                  </span>
+                },
+                )}
+          </div>
+          <div>
+            
+            {product_data&&product_data.imgurl&&product_data.imgurl.map((url, index) => (
+            <span key={url} >
+              <Image
+                src={IMG_URL+'/uploads/images/'+url}
+                alt="img"
+                width={50}
+                height={50}
+                className="inline"
+              />
+              <button onClick={() => handleDeleteImage( url)}>Del</button>
+            </span>
+          ))}
+        </div>
+        </div>
+ 
+      </div>
+      
+      {html}
+        <button className="m-4 px-4 py-2  bg-blue-700 text-white text-lg rounded "  onClick={() => handleSave()} >{product?"Save":"Add"}</button>
+          
+          <button className="m-4 px-4 py-2  bg-blue-700 text-white text-lg rounded "  onClick={() => handleCancel()}>Cancel</button>
+    </div>
+  );
+};
+export default Page;

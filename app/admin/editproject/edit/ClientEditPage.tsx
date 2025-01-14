@@ -1,15 +1,15 @@
 "use client";
 import { useState, useEffect} from "react";
 import Image from "next/image";
-import { Product } from "@/types";
+import { Project } from "@/types";
 import { useRouter } from 'next/navigation'
-import { file } from "jszip";
+import { Description } from "@headlessui/react";
 
-
-const Page = ({product}:{product:Product}) => {
-  // console.log(product, "editPage");
-  const root_url='http://localhost:5002'
-  const [product_data, setProduct_data] = useState(product);
+const Page = ({project}:{project:Project}) => {
+  // console.log(project, "editPage");
+  const IMG_URL=process.env.NEXT_PUBLIC_IMG_URL
+  //const IMG_URL='http://localhost:5002'
+  const [project_data, setproject_data] = useState(project);
   const [files, setFiles] = useState<
     {  file: File | null; url: string  }[]
   >([]);
@@ -21,49 +21,48 @@ const Page = ({product}:{product:Product}) => {
 
 
   const handleCancel = () => {
-   setProduct_data(product)
+   setproject_data(project)
    router.back()
 
   };
 
   const handleSave = async () => {
-    const toSaveData = product_data;
-    const toAddFiles =files
+    
     const formdata = new FormData();
-    formdata.append("data", JSON.stringify(toSaveData));
-    for (let i = 0; i < toAddFiles.length; i++) {
-      formdata.append("files", toAddFiles[i]);
+    formdata.append("data", JSON.stringify(project_data));
+    for (let i = 0; i < files.length; i++) {
+      formdata.append("files", files[i]);
     }
-    console.log("tosave", toSaveData, toAddFiles,product);
+    console.log("tosave", project_data, files,project);
 
     let response =""
-    if (product) 
-      {console.log ('backendurl',root_url)
-        response = await fetch(` ${root_url}/products?id=124`, {  
+    if (project) 
+      {console.log ('backendurl',IMG_URL)
+        response = await fetch(` ${IMG_URL}/projects`, {  
       method: "POST",
       body: formdata,
        }).then((res) => res.text());
-       }else {response = await fetch(`${root_url}/products?id=124`, {
+       }else {response = await fetch(`${IMG_URL}/projects`, {
           method: "PUT",
           body: formdata,
         }).then((res) => res.text());
 
         }
     console.log("response", JSON.stringify(response));
-    router.push ('/admin/editProduct')
+    router.push ('/admin/editproject')
     };
 
   const handleInputChange = ( field, value) => {
-    const updatedData = { ...product_data, [field]: value };
+    const updatedData = { ...project_data, [field]: value };
     //console.log(updatedData,field,value, "handleinput")
-    setProduct_data(updatedData);
+    setproject_data(updatedData);
   };
   const handleImageUpload =async (e) => {
       const fileReader = new FileReader();
       const loadedFile = e.target.files[0];
       setFiles([...files, loadedFile])
       fileReader.onload = () => {
-        //setProduct_data({...product_data, imgurl:imgurl})
+        //setproject_data({...project_data, imgurl:imgurl})
         setprevFiles((prevFiles) => [
           ...prevFiles,
           { name:loadedFile.name, url: fileReader.result },
@@ -86,26 +85,14 @@ const Page = ({product}:{product:Product}) => {
     setprevFiles(updateFiles);
     setFiles(files.filter(file=>file.name!==name))
     //delete the existing images
-    let updateExistingImgurl=product_data?.imgurl?.filter(i=>{
+    let updateExistingImgurl=project_data?.imgurl?.filter(i=>{
         console.log(i,name, "i!==name")
         return i!==name})||null
-    setProduct_data({...product_data, imgurl:updateExistingImgurl})
+    setproject_data({...project_data, imgurl:updateExistingImgurl})
   };
   const tdcss = "p-2 w-full border-solid border-2 border-indigo-600 flex";
-  const list=[ 'description','features','certificates','product_application','product_designed' ]
-  const html = list.map(i=>{
-    return <div className={'flex  p-2'} key={i}>
-    <label className="w-1/4">{i}</label>
-      <textarea
-        className={tdcss}
-        rows={5}
-        value={product_data?.[i]||""}
-        onChange={(e) =>
-          handleInputChange( i, e.target.value)
-        }
-      />
-    </div>})
-//console.log(product_data, "product_data")
+      
+//console.log(project_data, "project_data")
  
   return (
     <div className="p-8" >
@@ -115,7 +102,7 @@ const Page = ({product}:{product:Product}) => {
         <input
           className={tdcss}
           type="text"
-          value={product_data?.title||""}
+          value={project_data?.title||""}
           onChange={(e) => handleInputChange("title", e.target.value)}
         />
       </div>
@@ -124,7 +111,7 @@ const Page = ({product}:{product:Product}) => {
          <label className="w-1/4">SubTitle</label>
         <textarea
           className={tdcss}
-          value={product_data?.subtitle||""}
+          value={project_data?.subtitle||""}
           rows={2}
           onChange={(e) =>
             handleInputChange( "subtitle", e.target.value)
@@ -162,10 +149,10 @@ const Page = ({product}:{product:Product}) => {
           </div>
           <div>
             
-            {product_data&&product_data.imgurl&&product_data.imgurl.map((url, index) => (
+            {project_data&&project_data.imgurl&&project_data.imgurl.map((url, index) => (
             <span key={url} >
               <Image
-                src={root_url+'/uploads/images/'+url}
+                src={IMG_URL+'/uploads/images/'+url}
                 alt="img"
                 width={50}
                 height={50}
@@ -179,8 +166,39 @@ const Page = ({product}:{product:Product}) => {
  
       </div>
       
-      {html}
-        <button className="m-4 px-4 py-2  bg-blue-700 text-white text-lg rounded "  onClick={() => handleSave()} >{product?"Save":"Add"}</button>
+    <div className={'flex  p-2'} >
+      <label className="w-1/4">Description</label>
+      <textarea
+        className={tdcss}
+        rows={5}
+        value={project_data?.description||""}
+        onChange={(e) =>
+          handleInputChange( "descrition", e.target.value)
+        }
+      />
+    </div>        
+    <div className={'flex  p-2'} >
+      <label className="w-1/4">Product Used</label>
+      <textarea
+        className={tdcss}
+        rows={5}
+        value={project_data?.product_used||""}
+        onChange={(e) =>
+          handleInputChange( "product_used", e.target.value)
+        }
+      />
+    </div>  
+    <div className={'flex  p-2'} >
+        <input type="select"/>
+        <label htmlFor="product_used">select products used</label>
+        <select name="productUsed" id="product_used" className="rounded border-solid border-2 border-black">
+          <option value="proguard 169">progurad 169</option>
+          <option value="proguard 168">progurad 168</option>
+        </select>
+          
+      </div>
+    
+    <button className="m-4 px-4 py-2  bg-blue-700 text-white text-lg rounded "  onClick={() => handleSave()} >{project?"Save":"Add"}</button>
           
           <button className="m-4 px-4 py-2  bg-blue-700 text-white text-lg rounded "  onClick={() => handleCancel()}>Cancel</button>
     </div>

@@ -4,7 +4,7 @@ import Modal from "@/components/layout/Modal";
 import Image from "next/image";
 import { Product } from "@/types";
 import ProductPanel from "@/components/productFeatures";
-const img_root_url=process.env.DEV_BACKEND_URL+'/uploads/images/'
+const IMG_URL=process.env.ROOT_URL+'/uploads/images/'
 
 export async function generateMetadata ({searchParams}:{searchParams: {product_id:string,title:string}} ){
   const {title}=await searchParams
@@ -41,7 +41,7 @@ return(  <>
             <Image
             key={url}
               
-            src={img_root_url+url}
+            src={IMG_URL+url}
             alt="img"
             width={500}
             height={500}

@@ -33,7 +33,7 @@ export type ProductGQL ={
 }
 
 export type Project ={
-    projectId:number
+    project_id:number
     cursor?:string;
     title:string;
     subtitle:string;
