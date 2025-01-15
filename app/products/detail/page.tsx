@@ -12,16 +12,20 @@ export async function generateMetadata ({params}:{params: {id:string,title:strin
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { id: string,title:string};
+  searchParams: { product_id: string,title:string};
 }) {
-  const { id } = searchParams;
-  //const product = await getProduct(id); 
+
+  const { product_id,title } = searchParams;
+  console.log("productDetails SearchParams:", searchParams)
+
+  const query = (!!product_id)?parseInt(product_id):title
+   console.log("productDetails Search",query)
+  //const product = await getProduct(query);
   // product.imgurl = JSON.parse(product.imgurl)       
   // DB query with imgurl ="[....]"
-  console.log("productDetails SearchParams:", searchParams)
-  const product=await getProduct_gql (parseInt(id))
-  console.log("productdatails", product);
-  return <div> {UI(product)}</div>;
+  //const product=await getProduct_gql (parseInt(id))
+  //console.log("productdatails", product);
+  return <div> {'UI(product)'}</div>;
 }
 
 const UI = (product: Product) => (

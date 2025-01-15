@@ -28,6 +28,12 @@ export const getProductTitleByID =async (product_id_array:number [])=>{
     const data = await fetch (`${ROOT_URL}/products/details?product_id=${query}`).then(res=>res.json())
 }
 
+export const getProductByTitle =async (product_title:string [])=>{
+    const query = JSON.stringify(product_title)
+    const data = await fetch (`${ROOT_URL}/products/title_id?product_title=${query}`).then(res=>res.json())
+}
+
+
 export  const getProjectSummary = async (pageNumber=1)=>{
     const data= await fetch(`${ROOT_URL}/projects?page=${pageNumber}`)
                         .then(res=>res.json())

@@ -39,7 +39,7 @@ return(
               <Link
                 href={{
                   pathname: `/projects/projectDetails`,
-                  query: { id: project.projectId },
+                  query: { id: project.project_id },
                 }}
                 scroll={true}
               ></Link>

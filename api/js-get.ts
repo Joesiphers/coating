@@ -6,22 +6,51 @@ export async function getPages():Promise<number> {
   const pages=data[0].count;
   return pages
 }
-export async function getProduct(product_id: number | "all") {
+export async function getProduct(title_id_all : number|string| "all") {
   //console.log("api/js-get getProducts with" , product_id)
   try{
-    if (product_id=="all"){
+    if (title_id_all=="all"){
       return await dbquery(`SELECT * FROM products`)
     }
-    else{
-      const values=[product_id];
+    else if (typeof title_id_all === 'number')  {
+      const values=[title_id_all];
       const query = `SELECT * FROM products WHERE product_id=$1`;
       const data =await dbquery (query, values)
-      const product = data[0]
+      return data[0]
       //product.imgurl=JSON.parse(product.imgurl)
      // console.log("product", product)
       //product.features=JSON.parse(product.features)
-      return product
       }
+        else if (typeof title_id_all === 'number')  {
+      const values=[title_id_all];
+      const query = `SELECT * FROM products WHERE product_id=$1`;
+      const data =await dbquery (query, values)
+      return data[0]
+      //product.imgurl=JSON.parse(product.imgurl)
+     // console.log("product", product)
+      //product.features=JSON.parse(product.features)
+      }
+    else if (typeof title_id_all === 'number')  {
+      const values=[title_id_all];
+      const query = `SELECT * FROM products WHERE product_id=$1`;
+      const data =await dbquery (query, values)
+      return data[0]
+      //product.imgurl=JSON.parse(product.imgurl)
+     // console.log("product", product)
+      //product.features=JSON.parse(product.features)
+      }
+    else if (typeof title_id_all === 'string')  {
+      const values=[title_id_all];
+      const query = `SELECT * FROM products WHERE title=$1`;
+      console.log("product titl query", query, values)
+      const data =await dbquery (query, values)
+      console.log("product", data)
+        //product.imgurl=JSON.parse(product.imgurl)
+        //product.features=JSON.parse(product.features)
+        return data[0]
+
+      }
+  
     }
   catch(error){
     console.error("nextjsApi API got error", error)

@@ -13,20 +13,20 @@ export async function generateMetadata ({searchParams}:{searchParams: {product_i
  
 export default async function Page({ searchParams,params }: { params: { title: string },searchParams: { product_id: string,title:string} }
   ) {
-  const {product_id } =await searchParams;
   let product:Product;
+  const { product_id,title } = await searchParams;
+  console.log("productDetails SearchParams:", product_id,title)
+
+  const query = (!!product_id)?parseInt(product_id):title.trim()
+   console.log("productDetails Search query: ",query)
     try {
-      product=await getProduct(parseInt(product_id)); // with nextjs backend DB  access
-      //product.imgurl=JSON.parse(product.imgurl)
-     // product=await getProduct_gql (parseInt(id))
+      product=await getProduct(query); // with nextjs backend DB  access
       console.log("products/[title] ", product);  //with wrodpress GQL access
       if (!product){
         throw new Error ("fetch product error, return no product")
       }
-     //console.log("product[title]", product);
     } catch (err) {
-      //console.log("catchErr products[title]",err)
-      return <Modal info={"err"}> getProduct Error</Modal>;
+      return <Modal info={`err search:${query}`}> getProduct Error</Modal>;
     }
     //const str =product.content?product.content.replace(/\n /,''):""
 

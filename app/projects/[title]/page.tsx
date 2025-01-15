@@ -26,13 +26,7 @@ export default async function Page({
     }*/
   const { title, subtitle,features,description, imgurl,product_used}=project
 
-  let productsUsedTitleAndId
-  try {productsUsedTitleAndId =await getProductTitleByID([1,2] )
-    console.log("productsUsedTitleAndId", productsUsedTitleAndId)
-  }
-  catch(err){
-      console.log("get product title by id error", err) 
-  }
+
       return ( <div className="relative text-center m-auto ">
           <div className="text-3xl text-indigo-700 font-bold p-8">
           <p> {title.trim()}</p> 
@@ -56,36 +50,32 @@ export default async function Page({
               ))}
             </div>  
           </div>  
-      <div className="">
+      <div className="text-xl p-4 w-5/6 m-auto whitespace-pre-line text-left ">
         <p>Features</p> 
         <p>{features}</p>
         </div>  
 
       <div className="text-xl p-4 w-5/6 m-auto whitespace-pre-line text-left ">
-        <p>Description :</p>
+        <p>Project Details:</p>
         {description}
       </div>
-      <div>
-          <p>Products used </p>
-          {
-          productsUsedTitleAndId[0]&&productsUsedTitleAndId.map(i=>{
-              
-              return <Link href={{
-                        pathname:`/products/${i.title}`,
-                        query:{project_id:i.project_id}
-                                }}
-                        key={i.project_id}
-              >
-                  <li>{i.title} {i.project_id} </li>
-              </Link>})
-            }
-              <p>---</p>
-          {/*
-          products_used?.map(async i=>{
-              const {project_id}= await getProduct_gql(i)
-              return <div>{i}:{project_id} </div>
-            })
-              */}
+      <p className="text-xl p-4 w-5/6 m-auto whitespace-pre-line text-left ">Products used </p>
+      <div className="grid grid-cols-2 w-4/6 m-auto">
+        {product_used.split(',').map(
+          (i=>{
+            console.log(i)
+            return <div key={i}>
+              <Link   href={{
+                  pathname: `/products/details`,
+                  query: { title: i.trim() },
+                }}
+                scroll={true}
+>
+              {i}
+              </Link>
+            </div>
+          })
+        )}
               
           </div>
       </div>  
